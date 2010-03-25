@@ -84,7 +84,7 @@ def leave_info(request):
 def leave_match(request, match_id):
     match = get_object_or_404(Match, id = match_id)
     now = datetime.datetime.now()
-    if now + settings.MIN_TIME_TO_CANCELATION > now:
+    if now + settings.MIN_TIME_TO_CANCELATION > match.occured_at:
         raise Http404
     att = Attendance.objects.get(attendee = request.user, match = match)
     att.is_cancelled = True

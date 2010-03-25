@@ -85,7 +85,7 @@ def create_match(request):
                                          stack = data['stack'],
                                          home_team = data['home_team'],
                                          away_team = data['away_team'])
-            subject = u"%s tarihinde oynanacak maç sistemde açıldı." % match.occured_at.date
+            subject = u"%s tarihinde oynanacak maç sistemde açıldı." % match.occured_at.date().__str__()
             body = u"Oynamak isteyenler lütfen sistemden kayıt olunuz. \n\n http://hadimac.test.akinon.com" 
             from_email = "hadimac@akinon.com"
 #            users = User.objects.filter(is_active = True)

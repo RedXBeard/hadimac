@@ -4,6 +4,7 @@ from django.contrib import admin
 admin.autodiscover()
 
 urlpatterns = patterns('',
+    url(r'^deneme/$', 'hadimac.user.views.deneme'),
     url(r'^admin/(.*)', admin.site.root),
     url(r'^$', 'hadimac.user.views.hadimac_login', name = 'hadimac-login'),
     url(r"^main/$", "django.views.generic.simple.direct_to_template", {"template": "user/main.html"}, name = 'main'),

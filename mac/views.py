@@ -88,8 +88,9 @@ def create_match(request):
             subject = u"%s tarihinde oynanacak maç sistemde açıldı" % occured_at
             body = u"Oynamak isteyenler lütfen <a href=\"http://hadimac.test.akinon.com\">sistemden</a> kayıt olunuz." 
             from_email = "hadimac@akinon.com"
-#            tos = User.objects.filter(is_active = True)
-            tos = User.objects.filter(email = "ege.hanoglu@akinon.com")           
+#            users = User.objects.filter(is_active = True)
+            users = User.objects.filter(email = "ege.hanoglu@akinon.com")           
+            tos = map(lambda x: x.email, users)
             send_mail(subject = subject, message = body, from_email = from_email, recipient_list = tos)
             return HttpResponse('Eklendi')
     return r('user/create_match.html', {'form' : form}, request)

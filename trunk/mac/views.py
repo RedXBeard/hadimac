@@ -18,17 +18,6 @@ from hadimac.user.models import Attendance, UserFault
 import datetime
 
 @login_required
-def deneme(request):
-    match = Match.objects.get(pk = 2)
-    subject = u"%s tarihinde oynanacak maç sistemde açıldı." % match.occured_at.date().__str__()
-    body = u"Oynamak isteyenler lütfen sistemden kayıt olunuz. \n\n http://hadimac.test.akinon.com" 
-    from_email = "hadimac@akinon.com"
-    users = User.objects.filter(is_active = True)
-    tos = map(lambda x: x.email, users)
-    send_mail(subject = subject, message = body, from_email = from_email, recipient_list = tos)
-    return HttpResponse(u'Yollandı')    
-
-@login_required
 def active_matches(request):
     now = datetime.datetime.now()
     lst = list(Match.objects.all().order_by('-occured_at'))

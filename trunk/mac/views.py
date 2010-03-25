@@ -39,7 +39,7 @@ def attendees(request, match_id):
 @login_required
 def attend(request, match_id):
     if request.POST:
-        team = request.POST.get('team', None)
+        team = get_object_or_404(Team, id=request.POST.get('team', None))
         if not team: raise Http404
         match = get_object_or_404(Match, id = match_id)
         now = datetime.datetime.now()
@@ -48,10 +48,12 @@ def attend(request, match_id):
             raise Http404
         if  match.attendance_set.filter(is_cancelled = False).count() >= match.stack:
             return HttpResponse('Aktivite Dolu!')
+        if team.attendance_set.filter(match = match).count() >= (match.stack / 2):
+            return HttpResponse(u'Takım Dolu!')
         if not Attendance.is_user_attended(request.user, match):
             obj, is_created = Attendance.objects.get_or_create(attendee = request.user, match = match,)
             obj.is_cancelled = False
-            obj.team = get_object_or_404(Team, id=team)
+            obj.team = team
             obj.save()
         return HttpResponseRedirect(reverse('active-match-list'))
     else:

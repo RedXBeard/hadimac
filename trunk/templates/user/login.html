@@ -1,0 +1,15 @@
+{% include "head.html" %}
+<body>
+  <table>
+    <form method="POST" action="">
+    {{form.as_table}}
+    <tr>
+      <td><input type="submit" value="Giriş"></td>
+    </tr>
+    <tr>
+      <td>&nbsp;</td>
+      <td><a href="{% url registration %}">Henüz Üye Değilim</a></td>
+    </tr>
+  </table>
+</body>
+</html>

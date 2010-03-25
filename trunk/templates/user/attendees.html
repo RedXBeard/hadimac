@@ -1,0 +1,86 @@
+{% include "head.html" %}
+
+<body>
+{% include "menu.html" %}
+
+    {% if score %}
+    <div style="border:2px solid #000; width:160px; position:relative; margin:auto; text-align:center; padding-top:20px;">
+    <span style="font-weight:bold;">Maç Sonucu</span>
+    <h1>{{score.0.home_score}} - {{score.0.away_score}}</h1>
+    </div>
+    <br /><br />
+    {% endif %}
+
+    <table>
+      <tr>
+	<td>
+	  <span style="font-weight:bold; font-size:20px; color:{{match.home_team.color}};">{{match.home_team.name}}</span>
+	</td>
+	<td>
+	  <span style="font-weight:bold; font-size:20px; color:{{match.away_team.color}};">{{match.away_team.name}}</span>
+	</td>
+      </tr>
+      <tr>
+	<td>
+	  <div style="width:400px;">
+	    <ol>
+	      {% for player in home_players %}
+	      <li>{{player.attendee.get_full_name}}</li>
+	      {% endfor %}
+	    </ol>
+	  </div>
+	</td>
+	<td>
+	  <div style="width:400px;">
+	    <ol>
+	      {% for player in away_players %}
+	      <li>{{player.attendee.get_full_name}}</li>
+	      {% endfor %}
+	    </ol>
+	  </div>
+	</td>
+      </tr>
+    </table>
+
+
+    {% if comments %}
+    <br /><br />
+    <span style="font-weight:bold;">Yorumlar</span>
+
+    {% for comment in comments %}
+    <table id="{{comment.pk}}">
+      <tr>
+	<td><i>{{comment.user.get_full_name}}</i></td>
+      </tr>
+      <tr>
+	<td><span style="font-weight:bold;">{{comment.title}}</span>  {{comment.created_at|date:"d-m-y H:i"}}</td>
+      </tr>
+      <tr>
+	<td>{{comment.content}}</td>
+      </tr>
+    </table>
+    <hr />
+    {% endfor %}
+    {% endif %}
+
+    <br /><br />
+
+    <span style="font-weight:bold;">Yorum Ekle</span>
+
+    <form action="{% url add-comment match.pk %}" method="POST">
+      <table>
+	<tr>
+	  <td>Başlık:</td>
+	  <td><input type="text" name="title" style="width:400px;" /></td>
+	</tr>
+	<tr>
+	  <td>İçerik:</td>
+	  <td><textarea name="content" style="width:400px; height: 120px;"></textarea></td>
+	</tr>
+	<tr>
+	  <td colspan="2" style="text-align:center;"><input type="submit" value="Gönder" /></td>
+	</tr>
+      </table>
+    </form>
+  </body>
+</html>

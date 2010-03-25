@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+
 from django.contrib import auth
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.http import HttpResponseRedirect, Http404, HttpResponse
@@ -40,25 +41,32 @@ def attendees(request, match_id):
 @login_required
 def attend(request, match_id):
     if request.POST:
-        team = get_object_or_404(Team, id=request.POST.get('team', None))
-        if not team: raise Http404
         match = get_object_or_404(Match, id = match_id)
+
+        team = get_object_or_404(Team, id = request.POST.get('team', None))
+        if not team: 
+            raise Http404
+
         now = datetime.datetime.now()
         if match.occured_at < now -  settings.MIN_TIME_TO_CANCELATION or\
                 UserFault.objects.filter(owner = request.user, match__occured_at__gte = now - datetime.timedelta(days = 7)):
             raise Http404
+
         if  match.attendance_set.filter(is_cancelled = False).count() >= match.stack:
             return HttpResponse(u'Aktivite Dolu!')
+
         if team.attendance_set.filter(match = match).count() >= (match.stack / 2):
             return HttpResponse(u'Takım Dolu!')
+
         if not Attendance.is_user_attended(request.user, match):
-            obj, is_created = Attendance.objects.get_or_create(attendee = request.user, match = match,)
+            obj, is_created = Attendance.objects.get_or_create(attendee = request.user, match = match)
             obj.is_cancelled = False
             obj.team = team
             obj.save()
         return HttpResponseRedirect(reverse('active-match-list'))
+
     else:
-        return HttpResponse('Takim Secin!')
+        return HttpResponse(u'Takim Seçin!')
 
 @login_required
 @user_passes_test(lambda u: u.is_superuser)
@@ -68,14 +76,20 @@ def create_match(request):
         form = MatchForm(request.POST)
         if form.is_valid() and form.validate():
             data = form.cleaned_data
-            Match.objects.create(occured_at = data['occured_at'],
+            occured_at = data['occured_at']
+            Match.objects.create(occured_at = occured_at,
                                  place = data['place'],
                                  creater = request.user,
                                  stack = data['stack'],
                                  home_team = data['home_team'],
                                  away_team = data['away_team'])
+            subject = u"%s tarihinde oynanacak maç sistemde açıldı" % occured_at
+            body = u"Oynamak isteyenler lütfen <a href=\"http://hadimac.test.akinon.com\">sistemden</a> kayıt olunuz." 
+            from_email = "hadimac@akinon.com"
+#            tos = User.objects.filter(is_active = True)
+            tos = User.objects.filter(email = "ege.hanoglu@akinon.com")           
+            send_mail(subject = subject, message = body, from_email = from_email, recipient_list = tos)
             return HttpResponse('Eklendi')
-        print form.errors
     return r('user/create_match.html', {'form' : form}, request)
 
 def leave_info(request):
@@ -84,8 +98,10 @@ def leave_info(request):
 def leave_match(request, match_id):
     match = get_object_or_404(Match, id = match_id)
     now = datetime.datetime.now()
+
     if now + settings.MIN_TIME_TO_CANCELATION > match.occured_at:
         raise Http404
+
     att = Attendance.objects.get(attendee = request.user, match = match)
     att.is_cancelled = True
     att.save()

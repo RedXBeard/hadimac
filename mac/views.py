@@ -6,6 +6,7 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 from django.http import HttpResponseRedirect, Http404, HttpResponse
 from django.core.urlresolvers import reverse
 from django.shortcuts import get_object_or_404
+from django.core.mail import send_mail
 from django.conf import settings
 
 from hadimac.mac.models import Match

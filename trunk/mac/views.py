@@ -79,17 +79,17 @@ def create_match(request):
         if form.is_valid() and form.validate():
             data = form.cleaned_data
             occured_at = data['occured_at']
-            Match.objects.create(occured_at = occured_at,
-                                 place = data['place'],
-                                 creater = request.user,
-                                 stack = data['stack'],
-                                 home_team = data['home_team'],
-                                 away_team = data['away_team'])
-            subject = u"%s tarihinde oynanacak maç sistemde açıldı." % occured_at
-            body = u"Oynamak isteyenler lütfen sistemden kayıt olunuz. \n http://hadimac.test.akinon.com" 
+            match = Match.objects.create(occured_at = occured_at,
+                                         place = data['place'],
+                                         creater = request.user,
+                                         stack = data['stack'],
+                                         home_team = data['home_team'],
+                                         away_team = data['away_team'])
+            subject = u"%s tarihinde oynanacak maç sistemde açıldı." % match.occured_at.date
+            body = u"Oynamak isteyenler lütfen sistemden kayıt olunuz. \n\n http://hadimac.test.akinon.com" 
             from_email = "hadimac@akinon.com"
 #            users = User.objects.filter(is_active = True)
-            users = User.objects.filter(email = "ege.hanoglu@akinon.com")           
+            users = User.objects.filter(email = "egehanoglu@gmail.com")
             tos = map(lambda x: x.email, users)
             send_mail(subject = subject, message = body, from_email = from_email, recipient_list = tos)
             return HttpResponse('Eklendi')

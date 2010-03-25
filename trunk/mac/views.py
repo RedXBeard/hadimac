@@ -89,7 +89,7 @@ def create_match(request):
             body = u"Oynamak isteyenler lütfen sistemden kayıt olunuz. \n\n http://hadimac.test.akinon.com" 
             from_email = "hadimac@akinon.com"
 #            users = User.objects.filter(is_active = True)
-            users = User.objects.filter(email = "egehanoglu@gmail.com")
+            users = User.objects.filter(email = "ege.hanoglu@akinon.com")
             tos = map(lambda x: x.email, users)
             send_mail(subject = subject, message = body, from_email = from_email, recipient_list = tos)
             return HttpResponse('Eklendi')

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from django.contrib import auth
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.http import HttpResponseRedirect, Http404, HttpResponse
@@ -47,7 +48,7 @@ def attend(request, match_id):
                 UserFault.objects.filter(owner = request.user, match__occured_at__gte = now - datetime.timedelta(days = 7)):
             raise Http404
         if  match.attendance_set.filter(is_cancelled = False).count() >= match.stack:
-            return HttpResponse('Aktivite Dolu!')
+            return HttpResponse(u'Aktivite Dolu!')
         if team.attendance_set.filter(match = match).count() >= (match.stack / 2):
             return HttpResponse(u'Takım Dolu!')
         if not Attendance.is_user_attended(request.user, match):

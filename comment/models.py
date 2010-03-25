@@ -15,4 +15,4 @@ class Comment(models.Model):
     is_visible = models.BooleanField(default = True)
     
     def __unicode__(self):
-        return smart_str(self.user.get_full_name()) + " " + smart_str(self.title)
+        return self.user.get_full_name() + " " + smart_str(self.title)

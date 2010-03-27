@@ -19,4 +19,5 @@ urlpatterns = patterns('',
     url(r'^leave/match/(?P<match_id>\d+)/$', 'hadimac.mac.views.leave_match', name = 'leave-match'),
     url(r'^create/default/user/profiles/$', 'hadimac.user.views.create_default_user_profile',
         name = 'create-default-user-profile'),
+    url(r'^email/options/$', 'hadimac.user.views.email_options', name = 'email-options'),
 )

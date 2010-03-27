@@ -7,7 +7,7 @@ from django.contrib.sites.models import Site
 from django.core.urlresolvers import reverse
 from django.shortcuts import get_object_or_404
 
-from hadimac.user.forms import LoginForm, RegistrationForm
+from hadimac.user.forms import LoginForm, RegistrationForm, EmailOptionsForm
 from hadimac.shortcuts import r
 from hadimac.user.models import *
 
@@ -94,3 +94,19 @@ def create_default_user_profile(request):
         except:
             UserProfile.objects.create(user = user, get_forum_activity_as_email = False, get_match_activity_as_email = True)
     return HttpResponseRedirect('/')
+
+
+@login_required
+def email_options(request):
+    up = UserProfile.objects.get(user = request.user)
+    form = EmailOptionsForm({"get_match_activity_as_email" : up.get_match_activity_as_email,
+                             "get_forum_activity_as_email" : up.get_forum_activity_as_email})
+    message = ""
+    if request.POST:
+        form = EmailOptionsForm(request.POST)
+        if form.is_valid():
+            up.get_match_activity_as_email = form.cleaned_data['get_match_activity_as_email']
+            up.get_forum_activity_as_email = form.cleaned_data['get_forum_activity_as_email']
+            up.save()
+            message = "Degisiklik Kaydedildi."
+    return r("user/email_options.html", {"form" : form, "message" : message}, request)

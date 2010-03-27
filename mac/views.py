@@ -31,7 +31,7 @@ def active_matches(request):
 @login_required
 def attendees(request, match_id):
     match = get_object_or_404(Match, id = match_id)
-    comments = Comment.objects.filter(match = match, is_visible = True)
+    comments = Comment.objects.filter(match = match, is_visible = True).order_by('created_at')
     home_players = match.home_team.attendance_set.filter(is_cancelled = False, match = match)
     away_players = match.away_team.attendance_set.filter(is_cancelled = False, match = match)
     return r('user/attendees.html', {'match' : match,

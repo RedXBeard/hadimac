@@ -18,7 +18,7 @@ def add_comment(request, match_id):
     if request.POST:
         if Comment.objects.filter(user = request.user,
                                   created_at__gte = datetime.datetime.now() -\
-                                      datetime.timedelta(minutes = 10)):
+                                      datetime.timedelta(minutes = 0)):
             return HttpResponse(u"Bir on dakika mola verirsen pek cool olur.")
         match = get_object_or_404(Match, pk = match_id)
         title = request.POST.get("title", "")
@@ -26,7 +26,9 @@ def add_comment(request, match_id):
         comment = Comment.objects.create(match = match, user = request.user, title = title, content = content)
 
         subject = u"%s, %s tarihli maca yorum yazdi." % (request.user.get_full_name(), match.occured_at.date().__str__())
-        body = "%s\n\n%s adresinde yorumun icerigini bulabilirsiniz."%(content, reverse('attendees', args=[match_id]))
+        body = "%s\n\n%s\n\nhttp://hadimac.test.akinon.com%s adresinde yorumun icerigini bulabilirsiniz."%(title,
+                                                                                      content,
+                                                                                      reverse('attendees', args=[match_id]))
         from_email = "hadimac@akinon.com"
         users = auth.models.User.objects.filter(is_active = True, userprofile__get_forum_activity_as_email = True)
         print users

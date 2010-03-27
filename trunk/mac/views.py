@@ -13,7 +13,7 @@ from hadimac.mac.models import Match
 from hadimac.comment.models import Comment
 from hadimac.shortcuts import r
 from hadimac.mac.forms import MatchForm, MatchTeamForm, Team
-from hadimac.user.models import Attendance, UserFault
+from hadimac.user.models import Attendance, UserFault, UserProfile
 
 import datetime
 
@@ -85,12 +85,13 @@ def create_match(request):
                                          stack = data['stack'],
                                          home_team = data['home_team'],
                                          away_team = data['away_team'])
-            subject = u"%s tarihinde oynanacak maç sistemde açıldı." % match.occured_at.date().__str__()
-            body = u"Oynamak isteyenler lütfen sistemden kayıt olunuz. \n\n http://hadimac.test.akinon.com" 
-            from_email = "hadimac@akinon.com"
-            users = User.objects.filter(is_active = True)
-            tos = map(lambda x: x.email, users)
-            send_mail(subject = subject, message = body, from_email = from_email, recipient_list = tos)
+            if UserProfile.objects.get(user = request.user).get_match_activity_as_email:
+                subject = u"%s tarihinde oynanacak maç sistemde açıldı." % match.occured_at.date().__str__()
+                body = u"Oynamak isteyenler lütfen sistemden kayıt olunuz. \n\n http://hadimac.test.akinon.com" 
+                from_email = "hadimac@akinon.com"
+                users = User.objects.filter(is_active = True)
+                tos = map(lambda x: x.email, users)
+                send_mail(subject = subject, message = body, from_email = from_email, recipient_list = tos)
             return HttpResponse('Eklendi')
     return r('user/create_match.html', {'form' : form}, request)
 

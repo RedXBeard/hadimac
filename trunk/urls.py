@@ -17,4 +17,6 @@ urlpatterns = patterns('',
     url(r'^attendees/(?P<match_id>\d+)/$', 'hadimac.mac.views.attendees', name = 'attendees'),
     url(r'^add/comment/(?P<match_id>\d+)/$', 'hadimac.comment.views.add_comment', name = 'add-comment'),
     url(r'^leave/match/(?P<match_id>\d+)/$', 'hadimac.mac.views.leave_match', name = 'leave-match'),
+    url(r'^create/default/user/profiles/$', 'hadimac.user.views.create_default_user_profile',
+        name = 'create-default-user-profile'),
 )

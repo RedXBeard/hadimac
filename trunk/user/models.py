@@ -7,6 +7,11 @@ from hadimac.mac.models import Match, Team
 import datetime, sha, random, time
 
 
+class UserProfile(models.Model):
+    user = models.OneToOneField(User)
+    get_forum_activity_as_email = models.BooleanField(default = False)
+    get_match_activity_as_email = models.BooleanField(default = True)
+
 class UserFault(models.Model):
     created_at = models.DateTimeField(auto_now_add = True)
     owner = models.ForeignKey(User)
@@ -40,6 +45,8 @@ class Register(models.Model):
     last_name = models.CharField(max_length = 30)
     is_active = models.BooleanField(default = True)
     created_at = models.DateTimeField(auto_now_add = True)
+    get_forum_activity_as_email = models.BooleanField(default = False)
+    get_match_activity_as_email = models.BooleanField(default = False)
 
     def create_key(self):
         x = sha.new("%s%s"%(self.email, random.randint(10000000000000, 99999999999999999)))

@@ -53,7 +53,9 @@ def register_step1(request):
             key = Register(email = data['email'],
                            passwd = data['password1'],
                            first_name = data['first_name'],
-                           last_name = data['last_name']).create_key()
+                           last_name = data['last_name'],
+                           get_forum_activity_as_email = data['get_forum_activity_as_email'],
+                           get_match_activity_as_email = data['get_match_activity_as_email']).create_key()
             current_site = Site.objects.get_current()
             site_name = current_site.name
             domain = current_site.domain
@@ -78,5 +80,17 @@ def register_step2(request, key):
     u = auth.models.User(email = r.email, username = user_name, first_name = r.first_name, last_name = r.last_name)
     u.set_password(r.passwd)
     u.save()
+    up = UserProfile(user = u, get_match_activity_as_email = r.get_match_activity_as_email,
+                     get_forum_activity_as_email = r.get_forum_activity_as_email)
+    up.save()
     return HttpResponseRedirect(reverse('main', args=[]))
-    
+
+@user_passes_test(lambda u: u.is_superuser)
+def create_default_user_profile(request):
+    users = auth.models.User.objects.all()
+    for user in users:
+        try:
+            UserProfile.objects.get(user = user)
+        except:
+            UserProfile.objects.create(user = user, get_forum_activity_as_email = False, get_match_activity_as_email = True)
+    return HttpResponseRedirect('/')

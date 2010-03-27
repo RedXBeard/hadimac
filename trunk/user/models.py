@@ -12,6 +12,9 @@ class UserProfile(models.Model):
     get_forum_activity_as_email = models.BooleanField(default = False)
     get_match_activity_as_email = models.BooleanField(default = True)
 
+    def __unicode__(self):
+        return u"%s"%(self.user.get_full_name())
+
 class UserFault(models.Model):
     created_at = models.DateTimeField(auto_now_add = True)
     owner = models.ForeignKey(User)

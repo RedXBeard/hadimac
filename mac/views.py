@@ -68,7 +68,7 @@ def attend(request, match_id):
         return HttpResponseRedirect(reverse('active-match-list'))
 
     else:
-        return HttpResponse(u'Takim Seçin!')
+        return HttpResponse(u'Takım Seçin!')
 
 @login_required
 @user_passes_test(lambda u: u.is_superuser)

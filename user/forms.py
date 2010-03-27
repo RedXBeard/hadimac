@@ -38,3 +38,7 @@ class RegistrationForm(forms.Form):
 #             is_correct = False
 
         return is_correct
+
+class EmailOptionsForm(forms.Form):
+    get_forum_activity_as_email = forms.BooleanField(label = u"Forumda yazilanlari email adresime yolla.", required = False)
+    get_match_activity_as_email = forms.BooleanField(label = u"Her yeni mac bilgisini email adresime yolla.", required = False)

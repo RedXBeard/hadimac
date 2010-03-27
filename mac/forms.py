@@ -3,6 +3,7 @@ from django.forms.util import ErrorList
 
 from hadimac.mac.models import *
 
+import datetime
 
 class MatchForm(forms.Form):
     place = forms.CharField(max_length = 512, label = u"Mekan")
@@ -18,6 +19,14 @@ class MatchForm(forms.Form):
         if data['home_team'].id == data['away_team'].id:
             is_correct = False
             self.errors['away_team'] = ErrorList([u'Home ile Away Ayni Olamaz.'])
+
+        if Match.objects.filter(occured_at = data['occured_at']):
+            is_correct = False
+            self.errors['occured_at'] = ErrorList([u'Bu anda baska bir mac var.'])
+
+        if data['occured_at'] < datetime.datetime.now():
+            is_correct = False
+            self.errors['occured_at'] = ErrorList([u'Mac gecmiste kaldi ise millete ne.'])
 
         return is_correct
 

@@ -99,7 +99,6 @@ def leave_info(request):
     return HttpResponse("<h1>akin.kok@akinon.com adresine eposta yolu ile bildiriniz!</h1>")
 
 def leave_match(request, match_id):
-    raise Exception()
     match = get_object_or_404(Match, id = match_id)
     now = datetime.datetime.now()
 

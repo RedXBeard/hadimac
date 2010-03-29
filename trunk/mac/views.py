@@ -95,9 +95,11 @@ def create_match(request):
             return HttpResponse('Eklendi')
     return r('user/create_match.html', {'form' : form}, request)
 
+@login_required
 def leave_info(request):
     return HttpResponse("<h1>akin.kok@akinon.com adresine eposta yolu ile bildiriniz!</h1>")
 
+@login_required
 def leave_match(request, match_id):
     match = get_object_or_404(Match, id = match_id)
     now = datetime.datetime.now()
@@ -109,4 +111,8 @@ def leave_match(request, match_id):
     att.is_cancelled = True
     att.save()
     return HttpResponseRedirect(reverse('active-match-list'))
+    
+
+@login_required
+def new_match_request(request):
     

@@ -32,3 +32,19 @@ class MatchForm(forms.Form):
 
 class MatchTeamForm(forms.Form):
     team = forms.ModelChoiceField(queryset = Team.objects.all())
+
+
+class MatchRequest(models.Model):
+    home_team = models.ForeignKey(Team, related_name = "requested_home")
+    away_team = models.ForeignKey(Team, related_name = "requested_away")
+    occured_at = models.DateTimeField()
+    place = models.CharField(max_length = 512)
+    creater = models.ForeignKey(User)
+    stack = models.IntegerField()
+    explanation = models.TextField()
+
+
+class MatchRequestForm(forms.Form):
+    occured_at = mdoels.DateTimeField(help_text = "")
+    home_team = forms.ModelChoiceField(queryset = Team.objects.all(), "Ev Sahibi Takim")
+    away_team = forms.ModelChoiceField(queryset = Team.objects.all(), "Misafir Takin")

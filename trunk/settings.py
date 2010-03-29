@@ -36,6 +36,7 @@ elif HOSTNAME == 'monster':
     DATABASE_PASSWORD = '12345'
     DATABASE_HOST = 'localhost'
     DATABASE_PORT = '5432'
+    DEBUG = True
     ADMINS = (
         ('Ahmet Akin KOK', 'akin.kok@akinon.com'),
         )
@@ -47,6 +48,7 @@ elif HOSTNAME == 'ege-laptop':
     DATABASE_PASSWORD = '1313'
     DATABASE_HOST = 'localhost'
     DATABASE_PORT = '5432'
+    DEBUG = True
     ADMINS = (
         ('Ege Hanoglu', 'ege.hanoglu@akinon.com'),
         )

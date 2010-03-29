@@ -7,12 +7,13 @@ HOSTNAME = gethostname()
 HOSTS = ['tame']
 PRODUCTION = HOSTNAME in HOSTS
 
-DEBUG = True
+DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
     # ('Your Name', 'your_email@domain.com'),
-    ('Ahmet Akin KOK', 'akin.kok@akinon.com')
+    ('Ahmet Akin KOK', 'akin.kok@akinon.com'),
+    ('Oguz Aylanc', 'oguz.aylanc@akinon.com')
 )
 
 MANAGERS = ADMINS

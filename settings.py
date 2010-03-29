@@ -17,6 +17,7 @@ ADMINS = (
 )
 
 MANAGERS = ADMINS
+
 SERVER_EMAIL = "error@hadimac.com"
 
 if PRODUCTION:
@@ -35,6 +36,9 @@ elif HOSTNAME == 'monster':
     DATABASE_PASSWORD = '12345'
     DATABASE_HOST = 'localhost'
     DATABASE_PORT = '5432'
+    ADMINS = (
+        ('Ahmet Akin KOK', 'akin.kok@akinon.com'),
+        )
 elif HOSTNAME == 'ege-laptop':
     PROJECT_ROOT = '/home/ege/hadimac/'
     DATABASE_ENGINE = 'postgresql_psycopg2'
@@ -43,6 +47,9 @@ elif HOSTNAME == 'ege-laptop':
     DATABASE_PASSWORD = '1313'
     DATABASE_HOST = 'localhost'
     DATABASE_PORT = '5432'
+    ADMINS = (
+        ('Ege Hanoglu', 'ege.hanoglu@akinon.com'),
+        )
 
 MIN_TIME_TO_CANCELATION = datetime.timedelta(days = 2, hours = 12)
 

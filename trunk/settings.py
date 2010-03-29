@@ -17,6 +17,7 @@ ADMINS = (
 )
 
 MANAGERS = ADMINS
+SERVER_EMAIL = "error@hadimac.com"
 
 if PRODUCTION:
     PROJECT_ROOT = '/srv/hadimac/'

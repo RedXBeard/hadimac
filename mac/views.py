@@ -9,11 +9,11 @@ from django.shortcuts import get_object_or_404
 from django.core.mail import send_mail
 from django.conf import settings
 
-from hadimac.mac.models import Match
+from hadimac.mac.models import Match, MatchRequest
 from hadimac.comment.models import Comment
 from hadimac.shortcuts import r
-from hadimac.mac.forms import MatchForm, MatchTeamForm, Team
-from hadimac.user.models import Attendance, UserFault, UserProfile
+from hadimac.mac.forms import MatchForm, MatchTeamForm, Team, MatchRequestForm
+from hadimac.user.models import Attendance, UserFault, UserProfile, MatchRequestAttendance
 
 import datetime
 
@@ -115,4 +115,64 @@ def leave_match(request, match_id):
 
 @login_required
 def new_match_request(request):
-    
+    form = MatchRequestForm()
+    if request.POST:
+        form = MatchRequestForm(request.POST)
+        if form.is_valid() and form.validate():
+            data = form.cleaned_data
+            mr = MatchRequest(
+                home_team = data['home_team'],
+                away_team = data['away_team'],
+                occured_at = data['occured_at'],
+                place = data['place'],
+                creater = request.user,
+                stack = data['stack'],
+                explanation = data['explanation'])
+            mr.save()
+    return r("user/match_request.html", {"form" : form}, request)
+
+@login_required
+def requested_match_list(request):
+    match_list = MatchRequest.objects.filter(occured_at__gte = datetime.datetime.now())
+    for mq in match_list:
+        mq.number_of_att = mq.matchrequestattendance_set.filter(is_cancelled = False).count()
+        mq.is_attended = MatchRequestAttendance.objects.filter(attendee = request.user, is_cancelled = False)
+    return r("user/requested_match_list.html", {"list" : match_list, "form" : MatchTeamForm()}, request)
+
+@login_required
+def request_match(request, matchrequest_id):
+    mq = get_object_or_404(MatchRequest, pk = matchrequest_id)
+
+    team = get_object_or_404(Team, id = request.POST.get('team', None))
+
+    if not team: 
+        raise Http404
+
+    now = datetime.datetime.now()
+    if mq.occured_at < now -  settings.MIN_TIME_TO_CANCELATION or\
+            UserFault.objects.filter(owner = request.user, match__occured_at__gte = now - datetime.timedelta(days = 7)):
+        raise Http404
+
+    if mq.matchrequestattendance_set.filter(is_cancelled = False).count() >= mq.stack:
+        return HttpResponse(u'Aktivite Dolu!')
+
+    if team.matchrequestattendance_set.filter(match_request = mq, is_cancelled = False).count() >= (mq.stack / 2):
+        return HttpResponse(u'Takım Dolu!')
+     
+    if not MatchRequestAttendance.is_user_attended(request.user, mq):
+        obj, is_created = MatchRequestAttendance.objects.get_or_create(attendee = request.user, match_request = mq)
+        obj.is_cancelled = False
+        obj.team = team
+        obj.save()
+    return HttpResponseRedirect(reverse('requested-match-list'))
+
+@login_required
+def requesters(request, matchrequest_id):
+    return HttpResponse("<br/><br/>".join(map(lambda x: unicode(x), MatchRequestAttendance.objects.filter(match_request__id = matchrequest_id, is_cancelled = False))))
+
+@login_required
+def unrequest(request, matchrequest_id):
+    mra = get_object_or_404(MatchRequestAttendance, attendee = request.user)
+    mra.is_cancelled = True
+    mra.save()
+    return HttpResponseRedirect(reverse('requested-match-list'))

@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.utils.encoding import smart_str
 
-from hadimac.mac.models import Match, Team
+from hadimac.mac.models import Match, Team, MatchRequest
 
 import datetime, sha, random, time
 
@@ -56,3 +56,18 @@ class Register(models.Model):
         self.key = "%s%s%s"%(x.hexdigest(), random.randint(10000000000000, 99999999999999), ("%s"%(time.time()))[:10])
         self.save()
         return self.key
+
+
+class MatchRequestAttendance(models.Model):
+    attendee = models.ForeignKey(User)
+    match_request = models.ForeignKey(MatchRequest)
+    team = models.ForeignKey(Team, null = True, blank = True)
+    created_at = models.DateTimeField(auto_now_add = True)
+    is_cancelled = models.BooleanField(default = False)
+
+    def __unicode__(self):
+        return "%s ? "%smart_str(self.attendee.get_full_name())
+
+    @staticmethod
+    def is_user_attended(user, match_request):
+        return MatchRequestAttendance.objects.filter(attendee = user, match_request = match_request, is_cancelled = False).count() > 0

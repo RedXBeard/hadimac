@@ -50,8 +50,7 @@ class MatchRequest(models.Model):
     explanation = models.TextField()
 
     def __unicode__(self):
-        return smart_str(self.occured_at)
-    
+        return "%s ? "%smart_str(self.occured_at)
+
     def humanized_day(self):
         return WEEKDAYS[self.occured_at.weekday()]
-

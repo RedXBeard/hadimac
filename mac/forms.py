@@ -45,6 +45,27 @@ class MatchRequest(models.Model):
 
 
 class MatchRequestForm(forms.Form):
-    occured_at = mdoels.DateTimeField(help_text = "")
-    home_team = forms.ModelChoiceField(queryset = Team.objects.all(), "Ev Sahibi Takim")
-    away_team = forms.ModelChoiceField(queryset = Team.objects.all(), "Misafir Takin")
+    occured_at = forms.DateTimeField(label = u"Zaman", widget = forms.DateTimeInput, help_text = "12/22/2010 10:00:00")
+    home_team = forms.ModelChoiceField(queryset = Team.objects.all(), label = "Ev Sahibi Takim")
+    away_team = forms.ModelChoiceField(queryset = Team.objects.all(), label = "Misafir Takin")
+    place = forms.CharField(max_length = 512, label = "Mac Nerede Oynanacak?")
+    stack = forms.IntegerField(label = "Kac Kisilik?")
+    explanation = forms.CharField(widget = forms.widgets.Textarea, label = "Kisa bir aciklama yazin.")
+
+    def validate(self):
+        data = self.cleaned_data
+        is_correct = True
+
+        if data['home_team'].id == data['away_team'].id:
+            is_correct = False
+            self.errors['away_team'] = ErrorList([u'Home ile Away Ayni Olamaz.'])
+
+        if MatchRequest.objects.filter(occured_at = data['occured_at']) or Match.objects.filter(occured_at = data['occured_at']) :
+            is_correct = False
+            self.errors['occured_at'] = ErrorList([u'Bu anda baska bir mac ya da istek var.'])
+
+        if data['occured_at'] < datetime.datetime.now():
+            is_correct = False
+            self.errors['occured_at'] = ErrorList([u'Mac gecmiste kaldi ise millete ne.'])
+
+        return is_correct

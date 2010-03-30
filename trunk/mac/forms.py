@@ -71,3 +71,7 @@ class MatchRequestForm(forms.Form):
             self.errors['occured_at'] = ErrorList([u'Maç gecmişte kaldı ise millete ne.'])
 
         return is_correct
+
+class MatchScoreForm(forms.Form):
+    home_score = forms.IntegerField(required = True)
+    away_score = forms.IntegerField(required = True)

@@ -27,14 +27,17 @@
 	{% if not match.is_old %}
 	    {% if not match.is_attended %}
 	    <form action="{% url attend match.id %}" method="POST">
-	    {{form.as_p}}
-	    <p><label> </label><input type="submit" value="Katıl"/> </p>
+	    {{teamform.as_p}}
+	    <p><input type="submit" value="Katıl"/> </p>
 	    </form>
 	    {% else %}
 	    <a href="{% url leave-match match.id %}">Katılamayacağım</a>
 	    {% endif %}
 	{% else %}
-	&nbsp;
+	    <form action="{% url enter-match-score match.id %}" method="POST">
+	    {{scoreform.as_p}}
+	    <p><input type="submit" value="Kaydet"/> </p>
+	    </form>
 	{% endif %}
       </td>
 

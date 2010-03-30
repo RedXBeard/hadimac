@@ -9,7 +9,7 @@ from django.shortcuts import get_object_or_404
 from django.core.mail import send_mail
 from django.conf import settings
 
-from hadimac.mac.models import Match, MatchRequest
+from hadimac.mac.models import Match, MatchRequest, Score
 from hadimac.comment.models import Comment
 from hadimac.shortcuts import r
 from hadimac.mac.forms import MatchForm, MatchTeamForm, Team, MatchRequestForm, MatchScoreForm
@@ -195,8 +195,7 @@ def enter_match_score(request, match_id):
         if form.is_valid():
             data = form.cleaned_data
             match = get_object_or_404(Match, pk = match_id)
-            match.home_score = data['home_score']
-            match.away_score = data['away_score']
+            score = Score.objects.create(home_score = data['home_score'], away_score = data['away_score'])
             match.is_active = False
             match.save()
             return HttpResponse(u'Maç Skoru Girildi.')

@@ -70,7 +70,6 @@ def register_step1(request):
             return HttpResponse(u'Mailinize Bakın.')
     return r("user/registration.html", {'form' : form}, request)
 
-
 def register_step2(request, key):
     r = get_object_or_404(Register, key = key)
     if not r.is_active:
@@ -96,7 +95,6 @@ def create_default_user_profile(request):
         except:
             UserProfile.objects.create(user = user, get_forum_activity_as_email = False, get_match_activity_as_email = True)
     return HttpResponseRedirect('/')
-
 
 @login_required
 def email_options(request):

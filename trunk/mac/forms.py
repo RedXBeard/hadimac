@@ -52,7 +52,7 @@ class MatchRequestForm(forms.Form):
     away_team = forms.ModelChoiceField(queryset = Team.objects.all(), label = "Misafir Takım")
     place = forms.CharField(max_length = 512, label = "Maç Nerede Oynanacak?")
     stack = forms.IntegerField(label = "Kaç Kişilik?")
-    explanation = forms.CharField(widget = forms.widgets.Textarea, label = "Kısa bir açıklama yazın.")
+    explanation = forms.CharField(widget = forms.widgets.Textarea, label = "Kısa bir açıklama yazın")
 
     def validate(self):
         data = self.cleaned_data

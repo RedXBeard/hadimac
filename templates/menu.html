@@ -6,8 +6,8 @@
     {% if request.user.is_superuser %}
     <td style="padding-right:10px;"><a href="{% url create-match %}">Maç Ekle</a></td>
     {% endif %}
-    <td style="padding-right:10px;"><a href="{% url new-match-request %}">Mac Onerisi Yap</a></td>
-    <td style="padding-right:10px;"><a href="{% url requested-match-list %}">Oneri Halindeki Maclar</a></td>
+    <td style="padding-right:10px;"><a href="{% url new-match-request %}">Maç Önerisi Yap</a></td>
+    <td style="padding-right:10px;"><a href="{% url requested-match-list %}">Öneri Halindeki Maçlar</a></td>
     <td style="padding-right:10px;"><a href="{% url hadimac-logout %}">Çıkış</a></td>
   </tr>
 </table>

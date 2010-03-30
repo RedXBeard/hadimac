@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from django.contrib import auth
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.http import HttpResponseRedirect, Http404, HttpResponse
@@ -28,7 +30,7 @@ def hadimac_login(request):
                 else:
                     return HttpResponseRedirect(reverse("main", args=[]))
             else:
-                return HttpResponse('Bilgiler Yanlis')
+                return HttpResponse(u'Bilgiler Yanlış')
         else:
             # form is invalid so user is still anonymous, give the invalid form back to the user
             request.session.set_test_cookie()
@@ -59,13 +61,13 @@ def register_step1(request):
             current_site = Site.objects.get_current()
             site_name = current_site.name
             domain = current_site.domain
-            mail = EmailMultiAlternatives("Hadi Mac Uyelik",
-                                          'Asagidaki linke tiklayin.<br><a href="http://%s%s">Tiklayin!</a>'%(domain, reverse('registration-done', args = [key])),
+            mail = EmailMultiAlternatives(u"Hadi Maç Üyelik",
+                                          u'Aşağıdaki linke tıklayın.<br><a href="http://%s%s">Tıklayın!</a>'%(domain, reverse('registration-done', args = [key])),
                                           "hadimac@markafoni.com",
                                           [data['email']])
             mail.content_subtype = "html"
             mail.send()
-            return HttpResponse('Mailinize Bakin.')
+            return HttpResponse(u'Mailinize Bakın.')
     return r("user/registration.html", {'form' : form}, request)
 
 
@@ -108,5 +110,5 @@ def email_options(request):
             up.get_match_activity_as_email = form.cleaned_data['get_match_activity_as_email']
             up.get_forum_activity_as_email = form.cleaned_data['get_forum_activity_as_email']
             up.save()
-            message = "Degisiklik Kaydedildi."
+            message = u"Değişiklik Kaydedildi."
     return r("user/email_options.html", {"form" : form, "message" : message}, request)

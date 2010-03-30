@@ -34,7 +34,7 @@ class Attendance(models.Model):
     is_cancelled = models.BooleanField(default = False)
 
     def __unicode__(self):
-        return smart_str(self.attendee.get_full_name())
+        return u"%s"%smart_str(self.attendee.get_full_name())
 
     @staticmethod
     def is_user_attended(user, match):

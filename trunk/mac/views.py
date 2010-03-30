@@ -45,7 +45,7 @@ def attend(request, match_id):
     if request.POST:
         match = get_object_or_404(Match, id = match_id)
 
-        team = get_object_or_404(Team, id = request.POST.get('team', None))
+        team = get_object_or_404(Team, id = request.POST.get('team', 0))
         if not team: 
             raise Http404
 

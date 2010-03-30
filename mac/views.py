@@ -20,13 +20,22 @@ import datetime
 @login_required
 def active_matches(request):
     now = datetime.datetime.now()
-    lst = list(Match.objects.all().order_by('-occured_at'))
-    for m in lst:
-        m.is_attended = Attendance.is_user_attended(request.user, m)
-        m.number_of_att = m.attendance_set.filter(is_cancelled = False).count()
-        m.is_old = m.occured_at < now
+
+    active_matches = list(Match.objects.filter(is_active = True).order_by('-occured_at'))
+    for match in active_matches:
+        match.is_attended = Attendance.is_user_attended(request.user, match)
+        match.number_of_att = match.attendance_set.filter(is_cancelled = False).count()
+        match.is_old = match.occured_at < now
+
+    passive_matches = list(Match.objects.filter(is_active = False).order_by('-occured_at'))
+    for match in passive_matches:
+        match.is_attended = Attendance.is_user_attended(request.user, match)
+        match.number_of_att = match.attendance_set.filter(is_cancelled = False).count()
+        match.is_old = match.occured_at < now
     form = MatchTeamForm()
-    return r('user/match_list.html', {'list' : lst, 'form' : form}, request)
+    return r('user/match_list.html', {'active_matches' : active_matches, 
+                                      'passive_matches' : passive_matches, 
+                                      'form' : form}, request)
 
 @login_required
 def attendees(request, match_id):

@@ -28,6 +28,7 @@ if PRODUCTION:
     DATABASE_PASSWORD = '12345'
     DATABASE_HOST = 'localhost'
     DATABASE_PORT = '5432'
+    DEBUG = True
 elif HOSTNAME == 'monster':
     PROJECT_ROOT = '/home/aakok/akinon/hadimac/'
     DATABASE_ENGINE = 'postgresql_psycopg2'

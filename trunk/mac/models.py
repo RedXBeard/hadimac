@@ -2,7 +2,6 @@
 
 from django.db import models
 from django.contrib.auth.models import User
-from django.utils.encoding import smart_str
 
 WEEKDAYS = [u'Pazartesi', u'Salı', u'Çarşamba', u'Perşembe', u'Cuma', u'Cumartesi', u'Pazar']
 
@@ -12,7 +11,7 @@ class Team(models.Model):
     color = models.CharField(max_length = 64)
 
     def __unicode__(self):
-        return smart_str(self.name)
+        return u"%s"%self.name
 
 
 class Match(models.Model):
@@ -25,7 +24,7 @@ class Match(models.Model):
     stack = models.IntegerField()
 
     def __unicode__(self):
-        return smart_str(self.occured_at)
+        return u"%s"%self.occured_at
     
     def humanized_day(self):
         return WEEKDAYS[self.occured_at.weekday()]
@@ -37,7 +36,7 @@ class Score(models.Model):
     away_score = models.IntegerField()
 
     def __unicode__(self):
-        return smart_str(self.match.home_team.name) + "-" + smart_str(self.match.away_team.name) + ":" + smart_str(self.home_score) + "-" + smart_str(self.away_score)
+        return u"%s-%s:%s-%s"%(self.match.home_team.name, self.match.away_team.name, self.home_score, self.away_score)
 
 
 class MatchRequest(models.Model):
@@ -50,7 +49,7 @@ class MatchRequest(models.Model):
     explanation = models.TextField()
 
     def __unicode__(self):
-        return "%s ? "%smart_str(self.occured_at)
+        return u"%s ? "%self.occured_at
 
     def humanized_day(self):
         return WEEKDAYS[self.occured_at.weekday()]

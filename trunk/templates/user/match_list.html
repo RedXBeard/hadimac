@@ -5,7 +5,7 @@
 <span style="font-weight:bold; text-decoration:underline;">Aktif Maçlar</span>
 <br /><br />
 
-  {% if list %}
+  {% if active_matches %}
   <table border = 1>
     <tr>
       <th>Zaman</th>
@@ -15,18 +15,18 @@
       <th>Katılımcı Sayısı</th>
       <th>İşlemler</th>
     </tr>
-    {% for m in list %}
+    {% for match in active_matches %}
     <tr>
-      <td>{{m.occured_at.date}}</td>
-      <td>{{m.humanized_day}}</td>
-      <td>{{m.occured_at|date:"H:i"}}</td>
+      <td>{{match.occured_at.date}}</td>
+      <td>{{match.humanized_day}}</td>
+      <td>{{match.occured_at|date:"H:i"}}</td>
       <td><a href="{% url attendees m.id %}">{{m.place}}</a></td>
-      <td>{{m.number_of_att}}/{{m.stack}}</td>
+      <td>{{match.number_of_att}}/{{m.stack}}</td>
 
       <td>
-	{% if not m.is_old %}
-	    {% if not m.is_attended %}
-	    <form action="{% url attend m.id %}" method="POST">
+	{% if not match.is_old %}
+	    {% if not match.is_attended %}
+	    <form action="{% url attend match.id %}" method="POST">
 	    {{form.as_p}}
 	    <p><label> </label><input type="submit" value="Katıl"/> </p>
 	    </form>
@@ -48,7 +48,7 @@
 <span style="font-weight:bold; text-decoration:underline;">Geçmiş Maçlar</span>
 <br /><br />
 
-  {% if list %}
+  {% if passive_matches %}
   <table border = 1>
     <tr>
       <th>Zaman</th>
@@ -56,31 +56,14 @@
       <th>Saat</th>
       <th>Mekan</th>
       <th>Katılımcı Sayısı</th>
-      <th>İşlemler</th>
     </tr>
-    {% for m in list %}
+    {% for match in passive_matches %}
     <tr>
-      <td>{{m.occured_at.date}}</td>
-      <td>{{m.humanized_day}}</td>
-      <td>{{m.occured_at|date:"H:i"}}</td>
-      <td><a href="{% url attendees m.id %}">{{m.place}}</a></td>
-      <td>{{m.number_of_att}}/{{m.stack}}</td>
-
-      <td>
-	{% if not m.is_old %}
-	    {% if not m.is_attended %}
-	    <form action="{% url attend m.id %}" method="POST">
-	    {{form.as_p}}
-	    <p><label> </label><input type="submit" value="Katıl"/> </p>
-	    </form>
-	    {% else %}
-	    <a href="{% url leave-match m.id %}">Katılamayacağım</a>
-	    {% endif %}
-	{% else %}
-	&nbsp;
-	{% endif %}
-      </td>
-
+      <td>{{match.occured_at.date}}</td>
+      <td>{{match.humanized_day}}</td>
+      <td>{{match.occured_at|date:"H:i"}}</td>
+      <td><a href="{% url attendees match.id %}">{{match.place}}</a></td>
+      <td>{{match.number_of_att}}/{{match.stack}}</td>
     </tr>
     {% endfor %}
   </table>

@@ -20,8 +20,8 @@
       <td>{{match.occured_at.date}}</td>
       <td>{{match.humanized_day}}</td>
       <td>{{match.occured_at|date:"H:i"}}</td>
-      <td><a href="{% url attendees m.id %}">{{m.place}}</a></td>
-      <td>{{match.number_of_att}}/{{m.stack}}</td>
+      <td><a href="{% url attendees match.id %}">{{match.place}}</a></td>
+      <td>{{match.number_of_att}}/{{match.stack}}</td>
 
       <td>
 	{% if not match.is_old %}
@@ -31,7 +31,7 @@
 	    <p><label> </label><input type="submit" value="Katıl"/> </p>
 	    </form>
 	    {% else %}
-	    <a href="{% url leave-match m.id %}">Katılamayacağım</a>
+	    <a href="{% url leave-match match.id %}">Katılamayacağım</a>
 	    {% endif %}
 	{% else %}
 	&nbsp;

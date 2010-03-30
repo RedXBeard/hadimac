@@ -3,6 +3,7 @@
 {% include "menu.html" %}
 
 <span>Aktif Maçlar</span>
+<br />
 
   {% if list %}
   <table border = 1>
@@ -41,5 +42,47 @@
     {% endfor %}
   </table>
   {% endif %}
+
+<span>Geçmiş Maçlar</span>
+<br />
+
+  {% if list %}
+  <table border = 1>
+    <tr>
+      <th>Zaman</th>
+      <th>Gün</th>
+      <th>Saat</th>
+      <th>Mekan</th>
+      <th>Katılımcı Sayısı</th>
+      <th>İşlemler</th>
+    </tr>
+    {% for m in list %}
+    <tr>
+      <td>{{m.occured_at.date}}</td>
+      <td>{{m.humanized_day}}</td>
+      <td>{{m.occured_at|date:"H:i"}}</td>
+      <td><a href="{% url attendees m.id %}">{{m.place}}</a></td>
+      <td>{{m.number_of_att}}/{{m.stack}}</td>
+
+      <td>
+	{% if not m.is_old %}
+	    {% if not m.is_attended %}
+	    <form action="{% url attend m.id %}" method="POST">
+	    {{form.as_p}}
+	    <p><label> </label><input type="submit" value="Katıl"/> </p>
+	    </form>
+	    {% else %}
+	    <a href="{% url leave-match m.id %}">Katılamayacağım</a>
+	    {% endif %}
+	{% else %}
+	&nbsp;
+	{% endif %}
+      </td>
+
+    </tr>
+    {% endfor %}
+  </table>
+  {% endif %}
+
 </body>
 </html>

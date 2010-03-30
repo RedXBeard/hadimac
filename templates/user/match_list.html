@@ -34,10 +34,14 @@
 	    <a href="{% url leave-match match.id %}">Katılamayacağım</a>
 	    {% endif %}
 	{% else %}
+	    {% if request.user.is_superuser %}
 	    <form action="{% url enter-match-score match.id %}" method="POST">
 	    {{scoreform.as_p}}
 	    <p><input type="submit" value="Kaydet"/> </p>
 	    </form>
+	    {% else %}
+	    &nbsp;
+	    {% endif %}
 	{% endif %}
       </td>
 

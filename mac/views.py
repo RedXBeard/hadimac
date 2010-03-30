@@ -12,7 +12,7 @@ from django.conf import settings
 from hadimac.mac.models import Match, MatchRequest
 from hadimac.comment.models import Comment
 from hadimac.shortcuts import r
-from hadimac.mac.forms import MatchForm, MatchTeamForm, Team, MatchRequestForm
+from hadimac.mac.forms import MatchForm, MatchTeamForm, Team, MatchRequestForm, MatchScoreForm
 from hadimac.user.models import Attendance, UserFault, UserProfile, MatchRequestAttendance
 
 import datetime
@@ -32,10 +32,12 @@ def active_matches(request):
         match.is_attended = Attendance.is_user_attended(request.user, match)
         match.number_of_att = match.attendance_set.filter(is_cancelled = False).count()
         match.is_old = match.occured_at < now
-    form = MatchTeamForm()
+    teamform = MatchTeamForm()
+    scoreform = MatchScoreForm()
     return r('user/match_list.html', {'active_matches' : active_matches, 
                                       'passive_matches' : passive_matches, 
-                                      'form' : form}, request)
+                                      'teamform' : teamform,
+                                      'scoreform' : scoreform}, request)
 
 @login_required
 def attendees(request, match_id):
@@ -180,8 +182,18 @@ def requesters(request, matchrequest_id):
     return HttpResponse("<br/><br/>".join(map(lambda x: unicode(x), MatchRequestAttendance.objects.filter(match_request__id = matchrequest_id, is_cancelled = False))))
 
 @login_required
-def unrequest(request, matchrequest_id):
-    mra = get_object_or_404(MatchRequestAttendance, attendee = request.user)
-    mra.is_cancelled = True
-    mra.save()
-    return HttpResponseRedirect(reverse('requested-match-list'))
+def enter_match_score(request, match_id):
+    if request.POST:
+        form = MatchScoreForm(request.POST)
+        if form.is_valid():
+            data = form.cleaned_data
+            match = get_object_or_404(Match, pk = match_id)
+            match.home_score = data['home_score']
+            match.away_score = data['away_score']
+            match.is_active = False
+            match.save()
+            return HttpResponse(u'Maç Skoru Girildi.')
+        else:
+            return HttpResponse(u'Doğru Formatta Skor Giriniz!')
+    else:
+        return HttpResponse(u'Maç Skoru Giriniz!')

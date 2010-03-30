@@ -1,6 +1,6 @@
 {% include "head.html" %}
 <body>
-{% include "menu.html" %}
+  {% include "menu.html" %}
   {% if list %}
   <table border = 1>
     <tr>
@@ -21,14 +21,14 @@
 
       <td>
 	{% if not m.is_old %}
-	    {% if not m.is_attended %}
-	    <form action="{% url request-match m.id %}" method="POST">
-	    {{form.as_p}}
-	    <p><label> </label><input type="submit" value="IStek Yap"/> </p>
-	    </form>
-	    {% else %}
-	    <a href="{% url unrequest m.id %}">Katılamayacağım</a>
-	    {% endif %}
+	{% if not m.is_attended %}
+	<form action="{% url request-match m.id %}" method="POST">
+	  {{form.as_p}}
+	  <p><label> </label><input type="submit" value="İstek Yap"/> </p>
+	</form>
+	{% else %}
+	<a href="{% url unrequest m.id %}">Katılamayacağım</a>
+	{% endif %}
 	{% else %}
 	&nbsp;
 	{% endif %}

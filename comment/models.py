@@ -1,7 +1,6 @@
 from django.db import models
 
 from django.contrib.auth.models import User
-from django.utils.encoding import smart_str
 
 from hadimac.mac.models import *
 
@@ -15,4 +14,4 @@ class Comment(models.Model):
     is_visible = models.BooleanField(default = True)
     
     def __unicode__(self):
-        return smart_str(self.user.get_full_name()) + " " + self.title
+        return u"%s %s"%(self.user.get_full_name(), self.title)

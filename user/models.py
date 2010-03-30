@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 from django.db import models
 from django.contrib.auth.models import User
-from django.utils.encoding import smart_str
 
 from hadimac.mac.models import Match, Team, MatchRequest
 
@@ -67,7 +66,7 @@ class MatchRequestAttendance(models.Model):
     is_cancelled = models.BooleanField(default = False)
 
     def __unicode__(self):
-        return "%s ? "%smart_str(self.attendee.get_full_name())
+        return u"%s ? "%self.attendee.get_full_name()
 
     @staticmethod
     def is_user_attended(user, match_request):

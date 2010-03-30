@@ -129,6 +129,7 @@ def new_match_request(request):
                 stack = data['stack'],
                 explanation = data['explanation'])
             mr.save()
+            return HttpResponse('Maç Önerildi')
     return r("user/match_request.html", {"form" : form}, request)
 
 @login_required

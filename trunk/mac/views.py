@@ -181,6 +181,11 @@ def request_match(request, matchrequest_id):
 def requesters(request, matchrequest_id):
     return HttpResponse("<br/><br/>".join(map(lambda x: unicode(x), MatchRequestAttendance.objects.filter(match_request__id = matchrequest_id, is_cancelled = False))))
 
+
+@login_required
+def unrequest(request, match_id):
+    pass
+
 @login_required
 def enter_match_score(request, match_id):
     if request.POST:

@@ -112,7 +112,6 @@ def leave_match(request, match_id):
     att.save()
     return HttpResponseRedirect(reverse('active-match-list'))
     
-
 @login_required
 def new_match_request(request):
     form = MatchRequestForm()

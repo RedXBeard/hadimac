@@ -22,6 +22,7 @@ class Match(models.Model):
     creater = models.ForeignKey(User)
     is_cancelled = models.BooleanField(default = False)
     stack = models.IntegerField()
+    is_active = models.BooleanField(default = True)
 
     def __unicode__(self):
         return u"%s"%self.occured_at

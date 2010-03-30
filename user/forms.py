@@ -16,8 +16,8 @@ class RegistrationForm(forms.Form):
     password2 = forms.CharField(label = u"Parola Tekrar", required = True, widget = forms.PasswordInput())
     first_name = forms.CharField(label = u"Ad", max_length = 30)
     last_name = forms.CharField(label = u"Soyad", max_length = 30)
-    get_forum_activity_as_email = forms.BooleanField(label = u"Forumda yazılanları email adresime yolla.")
-    get_match_activity_as_email = forms.BooleanField(label = u"Her yeni maç bilgisini email adresime yolla.", initial = True)
+    get_forum_activity_as_email = forms.BooleanField(label = u"Forumda yazılanları email adresime yolla")
+    get_match_activity_as_email = forms.BooleanField(label = u"Her yeni maç bilgisini email adresime yolla", initial = True)
 
     def validate(self):
         data = self.cleaned_data
@@ -42,5 +42,5 @@ class RegistrationForm(forms.Form):
         return is_correct
 
 class EmailOptionsForm(forms.Form):
-    get_forum_activity_as_email = forms.BooleanField(label = u"Forumda yazılanları email adresime yolla.", required = False)
-    get_match_activity_as_email = forms.BooleanField(label = u"Her yeni maç bilgisini email adresime yolla.", required = False)
+    get_forum_activity_as_email = forms.BooleanField(label = u"Forumda yazılanları email adresime yolla", required = False)
+    get_match_activity_as_email = forms.BooleanField(label = u"Her yeni maç bilgisini email adresime yolla", required = False)

@@ -65,7 +65,7 @@ SITE_ID = 1
 
 USE_I18N = True
 
-MEDIA_ROOT = ''
+MEDIA_ROOT = os.path.join(PROJECT_ROOT,"site_media")
 
 MEDIA_URL = ''
 

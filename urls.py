@@ -1,9 +1,11 @@
 from django.conf.urls.defaults import *
-
+from django.conf import settings
 from django.contrib import admin
 admin.autodiscover()
 
 urlpatterns = patterns('',
+    url(r"^site_media/(?P<path>.*)$", "django.views.static.serve",
+                             dict(document_root=settings.MEDIA_ROOT, show_indexes=True)),
     url(r'^admin/(.*)', admin.site.root),
     url(r'^$', 'hadimac.user.views.hadimac_login', name = 'hadimac-login'),
     url(r"^main/$", "django.views.generic.simple.direct_to_template", {"template": "user/main.html"}, name = 'main'),

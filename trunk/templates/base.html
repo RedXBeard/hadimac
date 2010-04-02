@@ -1,0 +1,54 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <link rel="stylesheet" href="/site_media/css/main.css" type="text/css" media="screen" title="no title" charset="utf-8" />
+  <link rel="stylesheet" href="/site_media/css/reset-min.css" type="text/css" media="screen" title="no title" charset="utf-8" />
+  <title>hadiMaç</title>
+  <script type="text/javascript" src="/site_media/js/ac.js"></script>
+</head>
+<body>
+<div id="page">
+  <div id="center-field">
+    <div id="menu">
+      {% include "menu.html" %}
+    </div>
+    <div id="content">
+      {% block content %}
+        <div style="margin-top:10px;color:#96431F">Mandel Brot</div>
+        <script language="JavaScript" type="text/javascript">
+        	AC_FL_RunContent(
+        		'codebase', 'http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=10,0,0,0',
+        		'width', '450', //BURASI
+        		'height', '300',//BURASI
+        		'src', '/site_media/flash/mandelbrot',//BURASI
+        		'quality', 'high',
+        		'pluginspage', 'http://www.adobe.com/go/getflashplayer',
+        		'align', 'middle',
+        		'play', 'true',
+        		'loop', 'true',
+        		'scale', 'showall',
+        		'wmode', 'transparent',
+        		'devicefont', 'false',
+        		'id', 'mandelbrot',//BURASI
+        		'bgcolor', '#00a8e1',//BURASI
+        		'name', 'mandelbrot',//BURASI
+        		'menu', 'true',
+        		'allowFullScreen', 'false',
+        		'allowScriptAccess','sameDomain',
+        		'movie', '/site_media/flash/mandelbrot',//BURASI
+        		'salign', ''
+        		); //end AC code
+        </script>    
+        <div style="margin-top:10px;">Yapanlar : Önder Ezdi-Ahmet Akın Kök</div>
+      {% endblock %}
+    </div>
+    <div id="bottom-field">
+    <table border="0" cellspacing="0" cellpadding="0" width="%100">
+      <tr style="height:50px;vertical-aling:bottom;"><td></td></tr>
+    </table>
+    </div>
+  </div>
+</div>
+</body>
+</html>

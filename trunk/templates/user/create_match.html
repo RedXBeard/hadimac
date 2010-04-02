@@ -1,7 +1,5 @@
-{% include "head.html" %}
-<body>
-{% include "menu.html" %}
-
+{% extends "base.html" %}
+{% block content %}
   <table>
     <form method="POST" action="">
       {{form.as_table}}
@@ -10,5 +8,4 @@
       </tr>
     </form>
   </table>
-</body>
-</html>
+{% endblock %}

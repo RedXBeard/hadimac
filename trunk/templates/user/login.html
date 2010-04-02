@@ -1,5 +1,5 @@
-{% include "head.html" %}
-<body>
+{% extends "base.html" %}
+{% block content %}
   <table>
     <form method="POST" action="">
     {{form.as_table}}
@@ -11,5 +11,4 @@
       <td><a href="{% url registration %}">Henüz Üye Değilim</a></td>
     </tr>
   </table>
-</body>
-</html>
+{% endblock %}

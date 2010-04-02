@@ -41,6 +41,12 @@ elif HOSTNAME == 'monster':
     ADMINS = (
         ('Ahmet Akin KOK', 'akin.kok@akinon.com'),
         )
+elif HOSTNAME == 'serdar-laptop':
+    PROJECT_ROOT = '/home/serdar/hadimac/'
+    DATABASE_ENGINE = 'sqlite'
+    DATABASE_ENGINE = "sqlite3"
+    DATABASE_NAME = os.path.join(PROJECT_ROOT,"hadimac.db")
+    DEBUG = True
 elif HOSTNAME == 'ege-laptop':
     PROJECT_ROOT = '/home/ege/hadimac/'
     DATABASE_ENGINE = 'postgresql_psycopg2'

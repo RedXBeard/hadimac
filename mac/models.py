@@ -23,7 +23,8 @@ class Match(models.Model):
     is_cancelled = models.BooleanField(default = False)
     stack = models.IntegerField()
     is_active = models.BooleanField(default = True)
-
+    formation = models.TextField()
+    
     def __unicode__(self):
         return u"%s"%self.occured_at
     

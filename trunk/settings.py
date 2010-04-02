@@ -7,7 +7,7 @@ HOSTNAME = gethostname()
 HOSTS = ['tame']
 PRODUCTION = HOSTNAME in HOSTS
 
-DEBUG = False
+DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (

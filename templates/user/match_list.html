@@ -1,8 +1,8 @@
 {% extends "base.html" %}
 {% block content %}
-<div style="font-weight:bold; text-decoration:underline;">Aktif Maçlar</div>
+<div style="font-weight:bold;margin-bottom:10px;">Aktif Maçlar</div>
   {% if active_matches %}
-  <table border = 1>
+  <table border="1" class="maclar">
     <tr>
       <th>Zaman</th>
       <th>Gün</th>
@@ -22,19 +22,19 @@
       <td>
 	{% if not match.is_old %}
 	    {% if not match.is_attended %}
-	    <form action="{% url attend match.id %}" method="POST">
+  	    <form action="{% url attend match.id %}" method="POST">
 	    {{teamform.as_p}}
-	    <p><input type="submit" value="Katıl"/> </p>
-	    </form>
+  	    <p><input type="submit" value="Katıl"/> </p>
+  	    </form>
 	    {% else %}
-	    <a href="{% url leave-match match.id %}">Katılamayacağım</a>
+  	    <a href="{% url leave-match match.id %}">Katılamayacağım</a>
 	    {% endif %}
 	{% else %}
 	    {% if request.user.is_superuser %}
-	    <form action="{% url enter-match-score match.id %}" method="POST">
+  	    <form action="{% url enter-match-score match.id %}" method="POST">
 	    {{scoreform.as_p}}
-	    <p><input type="submit" value="Kaydet"/> </p>
-	    </form>
+  	    <p><input type="submit" value="Kaydet"/> </p>
+  	    </form>
 	    {% else %}
 	    &nbsp;
 	    {% endif %}
@@ -45,7 +45,7 @@
     {% endfor %}
   </table>
   {% endif %}
-<div style="font-weight:bold; text-decoration:underline;">Geçmiş Maçlar</div>
+<div style="font-weight:bold;margin :10px 0;">Geçmiş Maçlar</div>
 
   {% if passive_matches %}
   <table border = 1>

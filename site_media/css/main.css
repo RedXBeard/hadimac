@@ -49,8 +49,8 @@ html, body {
 .maclar th {
   padding:10px;
   background-color:darkGray;
-  padding-right:1px solid #000 !important;
-  padding-bottom:1px solid #000 !important;
+  border-right:1px solid #000 !important;
+  border-bottom:1px solid #000 !important;
 }
 .maclar td{
   padding:5px;

@@ -42,3 +42,14 @@ html, body {
   height:50px;
   background-color:#1F4E57;
 }
+.maclar {
+  border:1px solid #1F4E57;
+  width:100%;
+}
+.maclar th {
+  padding:10px;
+  background-color:#C7B07B;
+}
+.maclar td{
+  padding:5px;
+}

@@ -1,0 +1,42 @@
+a {
+  color:#96431F;
+}
+html, body {
+  height:100%;
+  background:#000;
+  font-family:"Trebuchet MS", verdana, sans;
+  font-size:13px !important;
+  font-weight:normal !important;
+}
+#page {
+  height:100%;
+  position:relative;
+}
+#center-field {
+  position:relative;
+  width:750px;
+  margin:auto;
+}
+#menu {
+  height:75px;
+  width:750px;
+  margin:0;
+  padding:0;
+  background-color:#1F4E57;
+}
+.menu-field a{
+  font-size:14px;
+  text-decoration:none;
+  color:#FFFF8B;
+}
+#content {
+  padding:40px;
+  width:670px;
+  min-height:400px;
+  background-color:#ddd;
+}
+#bottom-field {
+  width:750px;
+  height:50px;
+  background-color:#1F4E57;
+}

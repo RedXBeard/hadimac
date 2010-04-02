@@ -53,6 +53,18 @@ elif HOSTNAME == 'ege-laptop':
     ADMINS = (
         ('Ege Hanoglu', 'ege.hanoglu@akinon.com'),
         )
+elif HOSTNAME == 'butun-desktop':
+    PROJECT_ROOT = '/home/butun/hadimac/'
+    DATABASE_ENGINE = 'postgresql_psycopg2'
+    DATABASE_NAME = 'hadimac'
+    DATABASE_USER = 'postgres'
+    DATABASE_PASSWORD = 'test3142'
+    DATABASE_HOST = 'localhost'
+    DATABASE_PORT = '5432'
+    DEBUG = True
+    ADMINS = (
+        ('Yasin Meydan', 'yasin.meydan@akinon.com'),
+        )
 
 MIN_TIME_TO_CANCELATION = datetime.timedelta(days = 2, hours = 12)
 

@@ -1,6 +1,5 @@
-{% include "head.html" %}
-<body>
-  {% include "menu.html" %}
+{% extends "base.html" %}
+{% block content %}
   {% if list %}
   <table border = 1>
     <tr>
@@ -38,5 +37,4 @@
     {% endfor %}
   </table>
   {% endif %}
-</body>
-</html>
+{% endblock %}

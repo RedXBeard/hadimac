@@ -1,10 +1,6 @@
-{% include "head.html" %}
-<body>
-{% include "menu.html" %}
-
-<span style="font-weight:bold; text-decoration:underline;">Aktif Maçlar</span>
-<br /><br />
-
+{% extends "base.html" %}
+{% block content %}
+<div style="font-weight:bold; text-decoration:underline;">Aktif Maçlar</div>
   {% if active_matches %}
   <table border = 1>
     <tr>
@@ -49,11 +45,7 @@
     {% endfor %}
   </table>
   {% endif %}
-
-<br /><br />
-
-<span style="font-weight:bold; text-decoration:underline;">Geçmiş Maçlar</span>
-<br /><br />
+<div style="font-weight:bold; text-decoration:underline;">Geçmiş Maçlar</div>
 
   {% if passive_matches %}
   <table border = 1>
@@ -75,6 +67,4 @@
     {% endfor %}
   </table>
   {% endif %}
-
-</body>
-</html>
+{% endblock %}

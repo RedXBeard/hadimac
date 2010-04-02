@@ -1,14 +1,10 @@
-{% include "head.html" %}
-
-<body>
-{% include "menu.html" %}
-
+{% extends "base.html" %}
+{% block content %}
     {% if score %}
     <div style="border:2px solid #000; width:160px; position:relative; margin:auto; text-align:center; padding-top:20px;">
     <span style="font-weight:bold;">Maç Sonucu</span>
     <h1>{{score.0.home_score}} - {{score.0.away_score}}</h1>
     </div>
-    <br /><br />
     {% endif %}
 
     <table>
@@ -82,5 +78,4 @@
 	</tr>
       </table>
     </form>
-  </body>
-</html>
+{% endblock %}

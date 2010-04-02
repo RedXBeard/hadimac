@@ -12,6 +12,7 @@ html, body {
   min-height:100%;
   position:relative;
   margin:auto;
+  background-color:#000;
 }
 #center-field {
   position:relative;

@@ -45,6 +45,10 @@ def attendees(request, match_id):
     comments = Comment.objects.filter(match = match, is_visible = True).order_by('created_at')
     home_players = match.home_team.attendance_set.filter(is_cancelled = False, match = match)
     away_players = match.away_team.attendance_set.filter(is_cancelled = False, match = match)
+    if request.POST.get('formation'):
+      match.formation = request.POST.get('formation')
+      match.save()
+      return HttpResponse(u'Kaydedildi')
     return r('user/attendees.html', {'match' : match,
                                       'home_players' : home_players,
                                       'away_players' : away_players,

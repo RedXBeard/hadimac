@@ -7,30 +7,32 @@
     </div>
     {% endif %}
 
-    <table>
+    <table width="100%">
       <tr>
-	<td>
+	<td width="50%">
 	  <span style="font-weight:bold; font-size:20px; color:{{match.home_team.color}};">{{match.home_team.name}}</span>
 	</td>
-	<td>
+	<td width="50%">
 	  <span style="font-weight:bold; font-size:20px; color:{{match.away_team.color}};">{{match.away_team.name}}</span>
 	</td>
       </tr>
       <tr>
 	<td>
-	  <div style="width:400px;">
-	    <ol>
+	  <div id="home_region" style="position:relative;height:500px;">
+	    <img width="300" src="/site_media/img/pitch.png" style="position:absolute;" />
+	    <ol id="home_team" class="ulist">
 	      {% for player in home_players %}
-	      <li>{{player.attendee.get_full_name}}</li>
+	      <li id="home_{{forloop.counter}}">{{player.attendee.get_full_name}}</li>
 	      {% endfor %}
 	    </ol>
 	  </div>
 	</td>
 	<td>
-	  <div style="width:400px;">
-	    <ol>
+	  <div id="away_region" style="position:relative;height:500px;">
+	    <img width="300" src="/site_media/img/pitch.png" style="position:absolute;" />
+	    <ol id="away_team" class="ulist">
 	      {% for player in away_players %}
-	      <li>{{player.attendee.get_full_name}}</li>
+	      <li id="away_{{forloop.counter}}">{{player.attendee.get_full_name}}</li>
 	      {% endfor %}
 	    </ol>
 	  </div>
@@ -58,11 +60,10 @@
     <hr />
     {% endfor %}
     {% endif %}
-
-    <br /><br />
-
+    
+    <p align="center"><input type="button" id="yerlesim" value="Yerleşimi Kaydet" /></p>
     <span style="font-weight:bold;">Yorum Ekle</span>
-
+    <p>&nbsp;</p>
     <form action="{% url add-comment match.pk %}" method="POST">
       <table>
 	<tr>
@@ -78,4 +79,95 @@
 	</tr>
       </table>
     </form>
+<script src="/site_media/js/utilities.js" ></script>
+<script src="/site_media/js/dragdrop-min.js" ></script>
+<script src="/site_media/js/selector-min.js" ></script>
+<script src="/site_media/js/json-min.js" ></script>
+<script type="text/javascript">
+(function() {
+var $E=YAHOO.util.Event;
+var $D=YAHOO.util.Dom;
+var select=YAHOO.util.Selector.query;
+
+YAHOO.example.DDRegion = function(id, sGroup, config) {
+  this.cont = config.cont;
+  YAHOO.example.DDRegion.superclass.constructor.apply(this, arguments);
+};
+
+YAHOO.extend(YAHOO.example.DDRegion, YAHOO.util.DD, {
+  cont: null,
+  init: function() {
+    //Call the parent's init method
+    YAHOO.example.DDRegion.superclass.init.apply(this, arguments);
+    this.initConstraints();
+
+    $E.on(window, 'resize', function() {
+      this.initConstraints();
+    }, this, true);
+  },
+  initConstraints: function() {
+    var region = $D.getRegion(this.cont);
+    var el = this.getEl();
+    
+    var xy = $D.getXY(el);
+    var el_reg = $D.getRegion(el);
+    var width = parseInt(el_reg.right-el_reg.left, 10);
+    var height = parseInt(el_reg.bottom-el_reg.top, 10);
+    var left = xy[0] - region.left;
+    var right = region.right - xy[0] - width - 34;
+    var top = xy[1] - region.top;
+    var bottom = region.bottom - xy[1] - height;
+    
+    this.setXConstraint(left, right);
+    this.setYConstraint(top, bottom);
+  }
+});
+
+$E.onDOMReady(function() {
+  var home = select("li", "home_team");
+  var away = select("li", "away_team");
+  var home_team = [];
+  var away_team = [];
+  for(var i=0;i<home.length;i++) {
+    home_team[i] = new YAHOO.example.DDRegion(home[i].id, 'home', { cont: 'home_region' });
+  }
+  for(var i=0;i<away.length;i++) {
+    away_team[i] = new YAHOO.example.DDRegion(away[i].id, 'away', { cont: 'away_region' });
+  }
+});
+
+$E.on('yerlesim', 'click', function() {
+  save_formation();
+});
+
+var do_formation = function(formation) {
+  var f = YAHOO.lang.JSON.parse(formation);
+  for(var i=0;i<f.length;i++) {
+    $D.setStyle(f[i].id, 'left', f[i].left);
+    $D.setStyle(f[i].id, 'top', f[i].top);
+  }
+}
+
+var save_formation = function() {
+  var players = select("ol.ulist li");
+  var formation = [];
+  for(var i=0;i<players.length;i++) {
+    formation[i] = {
+      id:players[i].id,
+      left:$D.getStyle(players[i], 'left'),
+      top:$D.getStyle(players[i], 'top')
+    }
+  }
+  var transaction = YAHOO.util.Connect.asyncRequest('POST', window.location.href, {
+    success: function(o) {
+    },
+    failure: function(o) {
+    }
+  }, "formation="+YAHOO.lang.JSON.stringify(formation));
+}
+{% if match.formation %}
+do_formation('{{match.formation|safe}}');
+{% endif %}
+})();
+</script>
 {% endblock %}

@@ -39,7 +39,7 @@
 	</td>
       </tr>
     </table>
-
+<p align="center"><input type="button" id="yerlesim" value="Yerleşimi Kaydet" /></p>
 
     {% if comments %}
     <br /><br />
@@ -61,7 +61,7 @@
     {% endfor %}
     {% endif %}
     
-    <p align="center"><input type="button" id="yerlesim" value="Yerleşimi Kaydet" /></p>
+    
     <span style="font-weight:bold;">Yorum Ekle</span>
     <p>&nbsp;</p>
     <form action="{% url add-comment match.pk %}" method="POST">

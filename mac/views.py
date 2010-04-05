@@ -116,7 +116,7 @@ def leave_info(request):
 
 @login_required
 def leave_match(request, match_id):
-    raise Http404()
+    # raise Http404() # this was just a joke
     match = get_object_or_404(Match, id = match_id)
     now = datetime.datetime.now()
 

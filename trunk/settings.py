@@ -72,7 +72,7 @@ elif HOSTNAME == 'butun-desktop':
         ('Yasin Meydan', 'yasin.meydan@akinon.com'),
         )
 
-MIN_TIME_TO_CANCELATION = datetime.timedelta(days = 2, hours = 12)
+MIN_TIME_TO_CANCELATION = datetime.timedelta(days = 2, hours = 0)
 
 
 TIME_ZONE = 'Europe/Istanbul'

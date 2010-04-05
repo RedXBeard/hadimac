@@ -52,7 +52,7 @@ html, body {
   border-right:1px solid #000 !important;
   border-bottom:1px solid #000 !important;
 }
-.maclar td{
+.maclar td {
   padding:5px;
 }
 .ulist {
@@ -63,7 +63,6 @@ html, body {
   color:#000;
   font-size:12px;
   font-weight:bold; 
-  position:relative;
+  position:absolute;
   cursor:move;
-  display:inline;
 }

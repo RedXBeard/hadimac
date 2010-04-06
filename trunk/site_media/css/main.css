@@ -62,7 +62,7 @@ html, body {
 .ulist li {
   color:#000;
   text-transform:capitalize;
-  font-size:12px;
+  font-size:14px;
   font-weight:bold; 
   position:absolute;
   cursor:move;

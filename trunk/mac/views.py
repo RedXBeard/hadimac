@@ -85,6 +85,32 @@ def attend(request, match_id):
     else:
         return HttpResponse(u'Takım Seçin!')
 
+
+def create_match_cronic(request):
+    u = User.objects.get(email='serdar@yuix.org')
+    import time
+    delta_days_to_wed = (2 - datetime.datetime.now().weekday() + 7) % 7
+    occuredat = datetime.datetime.fromtimestamp(time.time()+delta_days_to_wed * 24 * 60 * 60)
+    occuredat = occuredat.replace(hour=20,minute=0,second=0)
+    from hadimac.mac.models import Team as Teams
+    teams = Teams.objects.all()
+    match = Match.objects.create(occured_at = occuredat,
+                                    place = u"Feriköy Halısaha",
+                                    creater = u,
+                                    stack = 14,
+                                    home_team = teams[0],
+                                    away_team = teams[1])
+    if UserProfile.objects.get(user = u).get_match_activity_as_email:
+        subject = u"%s tarihinde oynanacak maç sistemde açıldı." % match.occured_at.date().__str__()
+        body = u"Oynamak isteyenler lütfen sistemden kayıt olunuz. \n\n http://hadimac.test.akinon.com" 
+        from_email = "hadimac@akinon.com"
+        users = User.objects.filter(is_active = True)
+        tos = map(lambda x: x.email, users)
+        send_mail(subject = subject, message = body, from_email = from_email, recipient_list = tos)
+    
+    return HttpResponse('Eklendi')
+
+
 @login_required
 @user_passes_test(lambda u: u.is_superuser)
 def create_match(request):

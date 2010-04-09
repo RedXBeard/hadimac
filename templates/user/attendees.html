@@ -143,7 +143,14 @@ $E.onDOMReady(function() {
 $E.on('yerlesim', 'click', function() {
   save_formation();
 });
-
+$E.on(select('ol.ulist li'), 'mousedown', function(e) {
+	$E.preventDefault(e);
+	return false;
+});
+$E.on(select('ol.ulist li'), 'selectstart', function(e) {
+	$E.preventDefault(e);
+	return false;
+});
 var do_formation = function(formation) {
   var f = YAHOO.lang.JSON.parse(formation);
   for(var i=0;i<f.length;i++) {

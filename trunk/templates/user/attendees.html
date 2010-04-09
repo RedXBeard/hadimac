@@ -9,12 +9,12 @@
 
     <table width="100%">
       <tr>
-	<td width="50%">
-	  <span style="font-weight:bold; font-size:20px; color:{{match.home_team.color}};">{{match.home_team.name}}</span>
-	</td>
-	<td width="50%">
-	  <span style="font-weight:bold; font-size:20px; color:{{match.away_team.color}};">{{match.away_team.name}}</span>
-	</td>
+				<td width="50%">
+				  <span style="font-weight:bold; font-size:20px; color:{{match.home_team.color}};">{{match.home_team.name}}</span>
+				</td>
+				<td width="50%">
+				  <span style="font-weight:bold; font-size:20px; color:{{match.away_team.color}};">{{match.away_team.name}}</span>
+				</td>
       </tr>
       <tr>
 	<td>
@@ -129,10 +129,14 @@ $E.onDOMReady(function() {
   var home_team = [];
   var away_team = [];
   for(var i=0;i<home.length;i++) {
+  	{% ifequal users_team "home"  %}
     home_team[i] = new YAHOO.example.DDRegion(home[i].id, 'home', { cont: 'home_region' });
+    {% endifequal %}
   }
   for(var i=0;i<away.length;i++) {
+  	{% ifequal users_team "away" %}
     away_team[i] = new YAHOO.example.DDRegion(away[i].id, 'away', { cont: 'away_region' });
+    {% endifequal %}
   }
 });
 

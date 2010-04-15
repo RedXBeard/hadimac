@@ -82,7 +82,7 @@ elif HOSTNAME == "naruto-laptop":
 
 
 MIN_TIME_TO_CANCELATION = datetime.timedelta(days = 2, hours = 0)
-
+LENGTH_OF_FAULT = datetime.timedelta(days = 27, hours = 23, minutes = 59, seconds = 59)
 
 TIME_ZONE = 'Europe/Istanbul'
 

@@ -1,13 +1,16 @@
 <table border="0" cellspacing="0" cellpadding="0" width="100%" class="menu-field">
   <tr style="height:65px;vertical-align:bottom;">
+    {% if user.is_authenticated %}
     <td style="padding-right:10px;padding-left:10px;"><a href="{% url main %}">Anasayfa</a></td>
     <td style="padding-right:10px;"><a href="{% url active-match-list %}">Maçlar</a></td>
     <td style="padding-right:10px;"><a href="{% url email-options %}">Email Seçenekleri</a></td>
     {% if request.user.is_superuser %}
     <td style="padding-right:10px;"><a href="{% url create-match %}">Maç Ekle</a></td>
+    <td><a href="{% url user-fault %}">Cezai Islemler</a></td>
     {% endif %}
     <td style="padding-right:10px;"><a href="{% url new-match-request %}">Maç Önerisi Yap</a></td>
     <td style="padding-right:10px;"><a href="{% url requested-match-list %}">Öneri Halindeki Maçlar</a></td>
     <td style="padding-right:10px;"><a href="{% url hadimac-logout %}">Çıkış</a></td>
+    {% endif %}
   </tr>
 </table>

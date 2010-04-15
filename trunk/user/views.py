@@ -9,7 +9,7 @@ from django.contrib.sites.models import Site
 from django.core.urlresolvers import reverse
 from django.shortcuts import get_object_or_404
 
-from hadimac.user.forms import LoginForm, RegistrationForm, EmailOptionsForm
+from hadimac.user.forms import LoginForm, RegistrationForm, EmailOptionsForm, UserFaultForm
 from hadimac.shortcuts import r
 from hadimac.user.models import *
 
@@ -110,3 +110,22 @@ def email_options(request):
             up.save()
             message = u"Değişiklik Kaydedildi."
     return r("user/email_options.html", {"form" : form, "message" : message}, request)
+
+
+@user_passes_test(lambda u: u.is_superuser)
+def add_user_fault(request):
+    form = UserFaultForm()
+    message = '-'
+    if request.POST:
+        form = UserFaultForm(request.POST)
+        if form.is_valid():
+            data = form.cleaned_data
+            user = data['owner_profile'].user
+            match = data['match']
+            f, b = UserFault.objects.get_or_create(owner = user, match = match)
+            if not b:
+                message = "Zaten Var"
+            else:
+                message = "Verdin cezayi."
+    return r("user/user_fault.html", {"form" : form, "message": message}, request)
+        

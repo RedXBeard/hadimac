@@ -4,7 +4,8 @@ from django import forms
 from django.forms.util import ErrorList
 from django.contrib.auth.models import User
 
-from hadimac.user.models import Register
+from hadimac.user.models import Register, UserProfile
+from hadimac.mac.models import Match
 
 class LoginForm(forms.Form):
     email = forms.EmailField(label = u'Email', max_length = 256)
@@ -44,3 +45,8 @@ class RegistrationForm(forms.Form):
 class EmailOptionsForm(forms.Form):
     get_forum_activity_as_email = forms.BooleanField(label = u"Forumda yazılanları email adresime yolla", required = False)
     get_match_activity_as_email = forms.BooleanField(label = u"Her yeni maç bilgisini email adresime yolla", required = False)
+
+class UserFaultForm(forms.Form):
+    owner_profile = forms.ModelChoiceField(queryset = UserProfile.objects.all())
+    match = forms.ModelChoiceField(queryset = Match.objects.all())
+

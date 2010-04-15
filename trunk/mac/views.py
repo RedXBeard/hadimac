@@ -68,14 +68,13 @@ def attend(request, match_id):
     if request.POST:
         match = get_object_or_404(Match, id = match_id)
 
-        team = get_object_or_404(Team, id = request.POST.get('team', 0))
-        if not team: 
-            raise Http404
+        try   : team = get_object_or_404(Team, id = request.POST.get('team', 0))
+        except: return HttpResponse("Takim seciniz...")
 
         now = datetime.datetime.now()
         if match.occured_at < now -  settings.MIN_TIME_TO_CANCELATION or\
-                UserFault.objects.filter(owner = request.user, match__occured_at__gte = now - datetime.timedelta(days = 7)):
-            raise Http404
+                UserFault.objects.filter(owner = request.user, match__occured_at__gte = now - settings.LENGTH_OF_FAULT):
+            return HttpResponse("Cezaniz var.")
 
         if match.attendance_set.filter(is_cancelled = False).count() >= match.stack:
             return HttpResponse(u'Aktivite Dolu!')

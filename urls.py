@@ -29,4 +29,5 @@ urlpatterns = patterns('',
     url(r'^request/match/(?P<matchrequest_id>\d+)/$', 'hadimac.mac.views.request_match', name = 'request-match'),
     url(r'^requesters/(?P<matchrequest_id>\d+)/$', 'hadimac.mac.views.requesters', name = 'requesters'),
     url(r'^unrequest/(?P<matchrequest_id>\d+)/$', 'hadimac.mac.views.unrequest', name = 'unrequest'),
+    url(r'^userfault/$', 'hadimac.user.views.add_user_fault', name = 'user-fault'),
 )

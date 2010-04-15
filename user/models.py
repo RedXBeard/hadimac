@@ -20,6 +20,9 @@ class UserFault(models.Model):
     owner = models.ForeignKey(User)
     match = models.ForeignKey(Match)
 
+    def __unicode__(self):
+        return u"%s - %s"%(self.owner.get_full_name(), self.match.occured_at)
+
     @staticmethod
     def is_user_has_fault(user):
         return user.userfault_set.filter(owner = user).count() > 0

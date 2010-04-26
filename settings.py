@@ -68,6 +68,12 @@ elif HOSTNAME == 'butun-desktop':
     DATABASE_HOST = 'localhost'
     DATABASE_PORT = '5432'
     DEBUG = True
+    EMAIL_USE_TLS = True
+    EMAIL_HOST = 'smtp.gmail.com'
+    EMAIL_HOST_USER = 'yasso03@gmail.com'
+    EMAIL_HOST_PASSWORD = '5166963'
+    EMAIL_PORT = 587
+    EMAIL_TO ="yasin.meydan@akinon.com"
     ADMINS = (
         ('Yasin Meydan', 'yasin.meydan@akinon.com'),
         )

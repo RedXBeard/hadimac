@@ -3,6 +3,8 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+import datetime, sha, random, time
+
 WEEKDAYS = [u'Pazartesi', u'Salı', u'Çarşamba', u'Perşembe', u'Cuma', u'Cumartesi', u'Pazar']
 
 
@@ -55,3 +57,17 @@ class MatchRequest(models.Model):
 
     def humanized_day(self):
         return WEEKDAYS[self.occured_at.weekday()]
+      
+class MatchSubstitutes(models.Model):
+    key        = models.CharField(max_length = 64, null = True, blank = True)
+    email      = models.EmailField()
+    is_active  = models.BooleanField(default=False) 
+    
+    def create_key(self):
+      x = sha.new("%s%s"%(self.email, random.randint(10000000000000, 99999999999999999)))
+      self.key = "%s%s%s"%(x.hexdigest(), random.randint(10000000000000, 99999999999999), ("%s"%(time.time()))[:10])
+      self.save()
+      return self.key
+    def __unicode__(self):
+        return u'%s' %self.email
+    

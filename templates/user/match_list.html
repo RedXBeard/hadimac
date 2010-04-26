@@ -27,6 +27,10 @@
   	    <p><input type="submit" value="Katıl"/> </p>
   	    </form>
 	    {% else %}
+  	    <form action="{% url substitute match.id %}" method="post">
+    	    {{form.email}}
+  	      <input type="submit" value="Yerime Adam Ekle &rarr;" />
+  	    </form>
   	    <a href="{% url leave-match match.id %}">Katılamayacağım</a>
 	    {% endif %}
 	{% else %}

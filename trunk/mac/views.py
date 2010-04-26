@@ -5,17 +5,18 @@ from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.http import HttpResponseRedirect, Http404, HttpResponse
 from django.core.urlresolvers import reverse
+from django.contrib.sites.models import Site
 from django.shortcuts import get_object_or_404
-from django.core.mail import send_mail
+from django.core.mail import send_mail,EmailMultiAlternatives
 from django.conf import settings
 
-from hadimac.mac.models import Match, MatchRequest, Score
+from hadimac.mac.models import Match, MatchRequest, Score ,MatchSubstitutes
 from hadimac.comment.models import Comment
 from hadimac.shortcuts import r
-from hadimac.mac.forms import MatchForm, MatchTeamForm, Team, MatchRequestForm, MatchScoreForm
+from hadimac.mac.forms import MatchForm, MatchTeamForm, Team, MatchRequestForm, MatchScoreForm ,MatchSubstitute
 from hadimac.user.models import Attendance, UserFault, UserProfile, MatchRequestAttendance
 
-import datetime
+import datetime , random ,sha
 
 @login_required
 def active_matches(request):
@@ -34,10 +35,12 @@ def active_matches(request):
         match.is_old = match.occured_at < now
     teamform = MatchTeamForm()
     scoreform = MatchScoreForm()
+    form = MatchSubstitute()
     return r('user/match_list.html', {'active_matches' : active_matches, 
                                       'passive_matches' : passive_matches, 
                                       'teamform' : teamform,
-                                      'scoreform' : scoreform}, request)
+                                      'scoreform' : scoreform,
+                                      'form':form }, request)
 
 @login_required
 def attendees(request, match_id):
@@ -91,7 +94,6 @@ def attend(request, match_id):
 
     else:
         return HttpResponse(u'Takım Seçin!')
-
 
 def create_match_cronic(request):
     u = User.objects.get(email='serdar@yuix.org')
@@ -241,3 +243,50 @@ def enter_match_score(request, match_id):
             return HttpResponse(u'Doğru Formatta Skor Giriniz!')
     else:
         return HttpResponse(u'Maç Skoru Giriniz!')
+      
+@login_required
+def substitute(request, match_id):
+    now = datetime.datetime.now()
+
+    active_matches = list(Match.objects.filter(is_active = True).order_by('-occured_at'))
+    for match in active_matches:
+        match.is_attended = Attendance.is_user_attended(request.user, match)
+        match.number_of_att = match.attendance_set.filter(is_cancelled = False).count()
+        match.is_old = match.occured_at < now
+
+    passive_matches = list(Match.objects.filter(is_active = False).order_by('-occured_at'))
+    for match in passive_matches:
+        match.is_attended = Attendance.is_user_attended(request.user, match)
+        match.number_of_att = match.attendance_set.filter(is_cancelled = False).count()
+        match.is_old = match.occured_at < now
+    teamform = MatchTeamForm()
+    scoreform = MatchScoreForm()
+    
+    match = get_object_or_404(Match, id = match_id)
+    form = MatchSubstitute()
+    if request.POST:
+        print request.POST
+        form = MatchSubstitute(request.POST)
+        if form.is_valid():
+            data = form.cleaned_data
+            key = MatchSubstitutes(email = data['email']).create_key()
+            current_site = Site.objects.get_current()
+            site_name = current_site.name
+            domain = current_site.domain
+            mail = EmailMultiAlternatives(u"Yerime Oynarmısın?",
+                                          u'Aşağıdaki linke tıklayın.<br><a href="http://%s%s">Tıklayın!</a>'%(domain, reverse('substitute1', args = [key])),
+                                          "hadimac@markafoni.com",
+                                          [data['email']])
+            mail.content_subtype = "html"
+            mail.send()
+    return r('user/match_list.html', {'active_matches' : active_matches, 
+                                      'passive_matches' : passive_matches, 
+                                      'teamform' : teamform,
+                                      'scoreform' : scoreform,
+                                      }, request)           
+
+def substitute1(request, key):
+    r = get_object_or_404(MatchSubstitutes,key=key)
+    print r,"*************************************"
+    return HttpResponseRedirect(reverse('main', args=[]))
+

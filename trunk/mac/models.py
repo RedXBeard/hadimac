@@ -11,6 +11,7 @@ WEEKDAYS = [u'Pazartesi', u'Salı', u'Çarşamba', u'Perşembe', u'Cuma', u'Cuma
 class Team(models.Model):
     name = models.CharField(max_length = 64)
     color = models.CharField(max_length = 64)
+    is_active = models.BooleanField(default = True)
 
     def __unicode__(self):
         return u"%s"%self.name

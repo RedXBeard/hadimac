@@ -33,7 +33,7 @@ class MatchForm(forms.Form):
         return is_correct
 
 class MatchTeamForm(forms.Form):
-    team = forms.ModelChoiceField(queryset = Team.objects.all())
+    team = forms.ModelChoiceField(queryset = Team.objects.filter(is_active = True))
 
 
 class MatchRequest(models.Model):

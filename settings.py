@@ -85,7 +85,11 @@ elif HOSTNAME == "naruto-laptop":
     DATABASE_PASSWORD = '123456'
     DATABASE_HOST = 'localhost'
     DEBUG = True
-
+elif HOSTNAME == "dell-desktop":
+    PROJECT_ROOT="/home/hamdi/workspace/hadimac/"
+    DATABASE_ENGINE = 'sqlite3'
+    DATABASE_NAME = 'hadimac'
+    DEBUG = True
 
 MIN_TIME_TO_CANCELATION = datetime.timedelta(days = 2, hours = 0)
 LENGTH_OF_FAULT = datetime.timedelta(days = 27, hours = 23, minutes = 59, seconds = 59)

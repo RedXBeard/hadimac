@@ -19,7 +19,7 @@
       <tr>
 	<td>
 	  <div id="home_region" style="position:relative;height:500px;">
-	    <img width="300" src="/site_media/img/pitch.png" style="position:absolute;" />
+	    <img width="300" src="/site_media/img/pitch-up.png" style="position:absolute;" />
 	    <ol id="home_team" class="ulist">
 	      {% for player in home_players %}
 	      <li id="home_{{forloop.counter}}">{{player.attendee.get_full_name}}</li>
@@ -29,7 +29,7 @@
 	</td>
 	<td>
 	  <div id="away_region" style="position:relative;height:500px;">
-	    <img width="300" src="/site_media/img/pitch.png" style="position:absolute;" />
+	    <img width="300" src="/site_media/img/pitch-down.png" style="position:absolute;" />
 	    <ol id="away_team" class="ulist">
 	      {% for player in away_players %}
 	      <li id="away_{{forloop.counter}}">{{player.attendee.get_full_name}}</li>

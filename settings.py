@@ -29,6 +29,8 @@ if PRODUCTION:
     DATABASE_HOST = 'localhost'
     DATABASE_PORT = '5432'
     DEBUG = True
+    EMAIL_USE_TLS = True
+    EMAIL_HOST = 'mxrelay.akinon.com'
 elif HOSTNAME == 'monster':
     PROJECT_ROOT = '/home/aakok/akinon/hadimac/'
     DATABASE_ENGINE = 'postgresql_psycopg2'

@@ -1,14 +1,45 @@
 {% extends "base.html" %}
 {% block content %}
-  <table>
+	<style type="text/css">
+		table td.input-l {
+			background-color:#fff;
+			border:1px solid silver;
+			vertical-align:middle;
+			height:25px;
+		}
+		table td.input-l input {
+			border:0 !important;
+			line-height:1.231;
+			width:200px;
+			padding:4px;
+		}
+		.bosluk {
+			width:50px;
+			padding-right:10px;
+			font-size:14px;
+			text-align:right;
+		}
+		
+	</style>
+
+  <table style="margin-top:140px;margin-left:160px;color:#555753;">
     <form method="POST" action="">
-    {{form.as_table}}
+		<tr>
+			<th class="bosluk">Email</th>
+			<td class = "input-l">{{form.email}}</td>
+		</tr>
+		<tr style="height:5px;"><td></td><td></td></tr>
+		<tr>
+			<th class="bosluk">Şifre</th>
+			<td class = "input-l">{{form.password}}</td>
+		</tr>
+		<tr style="height:3px;"><td></td><td></td></tr>
     <tr>
-      <td><input type="submit" value="Giriş"></td>
-    </tr>
-    <tr>
-      <td>&nbsp;</td>
-      <td><a href="{% url registration %}">Henüz Üye Değilim</a></td>
+    	<td>&nbsp;</td>
+      <td style="text-align:right;vertical-align:middle;">
+	      <a href="{% url registration %}" style="font-size:11px;">Henüz Üye Değilim</a>
+	      <input type="submit" style="width:120px;height:25px;" value="Giriş">
+      </td>
     </tr>
   </table>
 {% endblock %}

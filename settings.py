@@ -61,8 +61,8 @@ elif HOSTNAME == 'ege-laptop':
     ADMINS = (
         ('Ege Hanoglu', 'ege.hanoglu@akinon.com'),
         )
-elif HOSTNAME == 'butun-desktop':
-    PROJECT_ROOT = '/home/butun/hadimac/'
+elif HOSTNAME == 'yasin-laptop':
+    PROJECT_ROOT = '/home/yasin/hadimac/'
     DATABASE_ENGINE = 'postgresql_psycopg2'
     DATABASE_NAME = 'hadimac'
     DATABASE_USER = 'postgres'

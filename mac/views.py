@@ -246,47 +246,37 @@ def enter_match_score(request, match_id):
       
 @login_required
 def substitute(request, match_id):
-    now = datetime.datetime.now()
-
-    active_matches = list(Match.objects.filter(is_active = True).order_by('-occured_at'))
-    for match in active_matches:
-        match.is_attended = Attendance.is_user_attended(request.user, match)
-        match.number_of_att = match.attendance_set.filter(is_cancelled = False).count()
-        match.is_old = match.occured_at < now
-
-    passive_matches = list(Match.objects.filter(is_active = False).order_by('-occured_at'))
-    for match in passive_matches:
-        match.is_attended = Attendance.is_user_attended(request.user, match)
-        match.number_of_att = match.attendance_set.filter(is_cancelled = False).count()
-        match.is_old = match.occured_at < now
-    teamform = MatchTeamForm()
-    scoreform = MatchScoreForm()
-    
-    match = get_object_or_404(Match, id = match_id)
-    form = MatchSubstitute()
-    if request.POST:
-        print request.POST
-        form = MatchSubstitute(request.POST)
-        if form.is_valid():
-            data = form.cleaned_data
-            key = MatchSubstitutes(email = data['email']).create_key()
-            current_site = Site.objects.get_current()
-            site_name = current_site.name
-            domain = current_site.domain
-            mail = EmailMultiAlternatives(u"Yerime Oynarmısın?",
-                                          u'Aşağıdaki linke tıklayın.<br><a href="http://%s%s">Tıklayın!</a>'%(domain, reverse('substitute1', args = [key])),
-                                          "hadimac@markafoni.com",
-                                          [data['email']])
-            mail.content_subtype = "html"
-            mail.send()
-    return r('user/match_list.html', {'active_matches' : active_matches, 
-                                      'passive_matches' : passive_matches, 
-                                      'teamform' : teamform,
-                                      'scoreform' : scoreform,
-                                      }, request)           
-
+		if request.POST:
+			form = MatchSubstitute(request.POST)
+			if form.is_valid():
+			    data = form.cleaned_data
+			    key = MatchSubstitutes(email = data['email'], inviter = request.user).create_key()
+			    current_site = Site.objects.get_current()
+			    domain = current_site.domain
+			    mail = EmailMultiAlternatives(u"Yerime Oynarmısın?",
+			                                  u'%s kendisini en iyi temsil eden kişi olarak seni seçti <br> Eğer Teklifini Kabul Ediyorsan <br> Aşağıdaki linke tıklayın.<br><a href="http://%s%s">Tıklayın!</a>'%(request.user,domain, reverse('substitute1', args = [key])),
+			                                  "hadimac@markafoni.com",
+			                                  [data['email']])
+			    mail.content_subtype = "html"
+			    mail.send()
+		return HttpResponseRedirect(reverse('main', args=[]))
+		
+@login_required
 def substitute1(request, key):
-    r = get_object_or_404(MatchSubstitutes,key=key)
-    print r,"*************************************"
-    return HttpResponseRedirect(reverse('main', args=[]))
+		proposal = get_object_or_404(MatchSubstitutes,key = key , is_active = True)
+		proposal.is_active = False
+		proposal.save()
 
+		inv = Attendance.objects.get(attendee = proposal.inviter)
+		if not Attendance.is_user_attended(request.user, inv.match):
+			subs = Attendance(attendee = request.user, match = inv.match ,team = inv.team, is_cancelled = False)
+			subs.save()
+			inv.delete()
+			
+			mail = EmailMultiAlternatives(u"Yerine Adam bulundu",
+			                              u'%s teklifini kabul etti<br>'%(request.user),
+			                              "hadimac@markafoni.com",
+			                              [proposal.email])
+			mail.content_subtype = "html"
+			mail.send()
+			return HttpResponseRedirect("?next=%s"%reverse('substitute1', args = [key]))

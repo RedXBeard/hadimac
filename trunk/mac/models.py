@@ -62,7 +62,8 @@ class MatchRequest(models.Model):
 class MatchSubstitutes(models.Model):
     key        = models.CharField(max_length = 64, null = True, blank = True)
     email      = models.EmailField()
-    is_active  = models.BooleanField(default=False) 
+    inviter    = models.ForeignKey(User)
+    is_active  = models.BooleanField(default=True) 
     
     def create_key(self):
       x = sha.new("%s%s"%(self.email, random.randint(10000000000000, 99999999999999999)))

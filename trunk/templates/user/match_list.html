@@ -10,6 +10,7 @@
       <th>Mekan</th>
       <th>Katılımcı Sayısı</th>
       <th>İşlemler</th>
+      <th>Yerime Adam Ekle</th>
     </tr>
     {% for match in active_matches %}
     <tr>
@@ -20,30 +21,34 @@
       <td>{{match.number_of_att}}/{{match.stack}}</td>
 
       <td>
-	{% if not match.is_old %}
-	    {% if not match.is_attended %}
-  	    <form action="{% url attend match.id %}" method="POST">
-	    {{teamform.as_p}}
-  	    <p><input type="submit" value="Katıl"/> </p>
-  	    </form>
-	    {% else %}
-  	    <form action="{% url substitute match.id %}" method="post">
-    	    {{form.email}}
-  	      <input type="submit" value="Yerime Adam Ekle &rarr;" />
-  	    </form>
-  	    <a href="{% url leave-match match.id %}">Katılamayacağım</a>
-	    {% endif %}
-	{% else %}
-	    {% if request.user.is_superuser %}
-  	    <form action="{% url enter-match-score match.id %}" method="POST">
-	    {{scoreform.as_p}}
-  	    <p><input type="submit" value="Kaydet"/> </p>
-  	    </form>
-	    {% else %}
-	    &nbsp;
-	    {% endif %}
-	{% endif %}
+				{% if not match.is_old %}
+				    {% if not match.is_attended %}
+			  	    <form action="{% url attend match.id %}" method="POST">
+				    {{teamform.as_p}}
+			  	    <p><input type="submit" value="Katıl"/> </p>
+			  	    </form>
+				    {% else %}
+			  	    <a href="{% url leave-match match.id %}">Katılamayacağım</a>
+				    {% endif %}
+				{% else %}
+				    {% if request.user.is_superuser %}
+			  	    <form action="{% url enter-match-score match.id %}" method="POST">
+				    {{scoreform.as_p}}
+			  	    <p><input type="submit" value="Kaydet"/> </p>
+			  	    </form>
+				    {% else %}
+				    &nbsp;
+				    {% endif %}
+				{% endif %}
       </td>
+      {% if match.is_attended %}
+      <td>
+				<form action="{% url substitute match.id %}" method="post">
+					<input type="text" name="email" value="E-mail Adresi" id="id_email" style="font-size:11px;color:#555753;"/>
+					<input type="submit" style="font-size:11px;color:#555753;"	value="Teklif Et" />
+				</form>
+      </td>
+      {% endif %}
 
     </tr>
     {% endfor %}
